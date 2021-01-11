@@ -37,10 +37,16 @@ public class UsuarioDAO {
             rs = ps.executeQuery();
             
             if(rs.next()){
+                ps.close();
+                rs.close();
                 return true;
             } else{
+                ps.close();
+                rs.close();
                 return false;
             }
+            
+            
         } catch (SQLException e) {
                System.out.println(e.toString());
                return false;

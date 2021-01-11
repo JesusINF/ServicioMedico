@@ -13,7 +13,7 @@
         <link rel="icon" type="image/vnd.microsoft.icon" href="Imagenes/favicon.ico" sizes="16x16">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="Estilos/EstiloIncioSesion.css">
+        <link rel="stylesheet" href="Estilos/EstiloLogin.css">
     </head>
     <body>
         <div class="inicio-sesion">

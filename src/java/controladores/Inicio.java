@@ -64,10 +64,12 @@ public class Inicio extends HttpServlet {
         
         accion = request.getParameter("accion");
         
-        if(accion == null || accion.isEmpty()){
+        if(accion == null || accion.isEmpty() || "validar".equals(accion) ){
             dispatcher = request.getRequestDispatcher("Ventanas/index.jsp");
             request.setAttribute("Login", "null");
         }
+        
+        dispatcher.forward(request, response);
     }
 
     /**

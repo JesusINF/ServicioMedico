@@ -75,7 +75,7 @@ public class Login extends HttpServlet {
             String password = request.getParameter("password");
             
             if(usuariosDAO.login(usuario, password)){
-                dispatcher = request.getRequestDispatcher("Ventanas/index.jsp");
+                dispatcher = request.getRequestDispatcher("Inicio");
                 request.setAttribute("Login", "null");
             }
             else{

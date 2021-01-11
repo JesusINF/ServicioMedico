@@ -88,7 +88,7 @@
 
             <ul class="logout">
                 <li>
-                    <a href="../index.html">
+                    <a href="Login">
                         <i class="fa fa-power-off fa-2x"></i>
                         <span class="nav-text">
                             Cerrar Sesión
