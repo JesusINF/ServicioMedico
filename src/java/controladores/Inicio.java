@@ -13,14 +13,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelos.UsuarioDAO;
 
 /**
  *
  * @author jesus
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class Login extends HttpServlet {
+@WebServlet(name = "Inicio", urlPatterns = {"/Inicio"})
+public class Inicio extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class Login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Login</title>");            
+            out.println("<title>Servlet Inicio</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Inicio at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,31 +59,15 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UsuarioDAO usuariosDAO = new UsuarioDAO();
-        String accion = null;
+        String accion;
         RequestDispatcher dispatcher = null;
         
         accion = request.getParameter("accion");
         
-        if (accion == null || accion.isEmpty()){
-            dispatcher = request.getRequestDispatcher("index.jsp");
+        if(accion == null || accion.isEmpty()){
+            dispatcher = request.getRequestDispatcher("Ventanas/index.jsp");
             request.setAttribute("Login", "null");
         }
-        else if ("validar".equals(accion)){
-            String usuario = request.getParameter("usuario");
-            String password = request.getParameter("password");
-            
-            if(usuariosDAO.login(usuario, password)){
-                dispatcher = request.getRequestDispatcher("Ventanas/index.jsp");
-                request.setAttribute("Login", "null");
-            }
-            else{
-                dispatcher = request.getRequestDispatcher("index.jsp");
-                request.setAttribute("Login", "error");
-            }
-        }
-        
-        dispatcher.forward(request, response);
     }
 
     /**

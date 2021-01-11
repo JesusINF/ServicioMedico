@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="es_mx">
     <head>
@@ -18,9 +19,10 @@
         <div class="inicio-sesion">
             <h1> Inicia Sesión </h1>
             <img src="Imagenes/icon-login.png">
-            <form class="login-form">
-                <input type="text" class="login-username" autofocus required placeholder="Usuario" />
-                <input type="password" class="login-password" required placeholder="Contraseña" />
+            <p class="<c:out value="${Login}"/>">*El usuario o contraseña que ingresaste es incorrecta</p>
+            <form class="login-form" action="Login?accion=validar" method="POST" autocomplete="off">
+                <input type="text" id="usuario" name="usuario" class="login-username" autofocus required placeholder="Usuario" />
+                <input type="password" id="password" name="password" class="login-password" required placeholder="Contraseña" />
                 <input type="submit" name="Login" value="Ingresar" class="login-submit" />
             </form>
         </div>

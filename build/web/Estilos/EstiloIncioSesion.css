@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Amaranth&family=Hammersmith+One&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
 
 body, html {
     height: 100%;
@@ -63,6 +63,19 @@ img{
     height: 12%;
 }
 
+.inicio-sesion p{
+    font-family: 'Yusei Magic', sans-serif;
+    font-size: 20px;
+    color: #7B241C;
+}
+
+.null{
+    display: none;
+}
+
+.error{
+    display: block;
+}
 
 input::-webkit-input-placeholder {
     color: rgba(255, 255, 255, 0.7);
