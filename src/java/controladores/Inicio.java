@@ -13,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modelos.Usuario;
 
 /**
  *
@@ -38,7 +40,7 @@ public class Inicio extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Inicio</title>");            
+            out.println("<title>Servlet Inicio</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Inicio at " + request.getContextPath() + "</h1>");
@@ -61,14 +63,24 @@ public class Inicio extends HttpServlet {
             throws ServletException, IOException {
         String accion;
         RequestDispatcher dispatcher = null;
-        
+        HttpSession sesion = request.getSession();
+        Usuario user = (Usuario) sesion.getAttribute("login");
+
         accion = request.getParameter("accion");
-        
-        if(accion == null || accion.isEmpty() || "validar".equals(accion) ){
-            dispatcher = request.getRequestDispatcher("Ventanas/index.jsp");
-            request.setAttribute("Login", "null");
+
+        if (user == null) {
+            dispatcher = request.getRequestDispatcher("error.jsp");
+        } else {
+
+            if (accion == null || accion.isEmpty()) {
+                dispatcher = request.getRequestDispatcher("Ventanas/inicio.jsp");
+            }
+            if ("Logout".equals(accion)) {
+                sesion.invalidate();
+                response.sendRedirect("Login");
+                return;
+            }
         }
-        
         dispatcher.forward(request, response);
     }
 

@@ -13,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modelos.Usuario;
 import modelos.UsuarioDAO;
 
 /**
@@ -75,8 +77,11 @@ public class Login extends HttpServlet {
             String password = request.getParameter("password");
             
             if(usuariosDAO.login(usuario, password)){
-                dispatcher = request.getRequestDispatcher("Inicio");
-                request.setAttribute("Login", "null");
+                HttpSession session = request.getSession();
+                Usuario user = usuariosDAO.obtenerSesion(usuario, password);
+                session.setAttribute("login", user);
+                response.sendRedirect("Inicio");
+                return;
             }
             else{
                 dispatcher = request.getRequestDispatcher("index.jsp");

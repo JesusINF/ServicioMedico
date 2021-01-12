@@ -52,4 +52,31 @@ public class UsuarioDAO {
                return false;
         }
     }
+    
+    public Usuario obtenerSesion(String usuario, String password){
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+
+            ps = conexion.prepareStatement("SELECT `usuario`.`tipo` FROM `serviciomedico`.`usuario` WHERE `usuario`.`usuario` = ? AND `usuario`.`password` = ?;");
+            ps.setString(1, usuario);
+            ps.setString(2, password);
+            rs = ps.executeQuery();
+            
+            Usuario user = null;
+            
+            while(rs.next()){
+                String tipo = rs.getString("tipo");
+                
+                 user = new Usuario(0, usuario, password, tipo);
+            }
+            
+            return user;
+            
+        } catch (SQLException e) {
+               System.out.println(e.toString());
+               return null;
+        }
+    }
 }
