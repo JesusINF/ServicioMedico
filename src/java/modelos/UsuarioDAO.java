@@ -6,6 +6,7 @@
 package modelos;
 
 import config.Conexion;
+import config.EncriptadorAES;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ public class UsuarioDAO {
     private Connection conexion;
     private Conexion con;
 
-    public void UsuarioDAO() {
+    private void UsuarioDAO() {
         con = new Conexion();
         conexion = con.getConexion();
     }
@@ -59,7 +60,7 @@ public class UsuarioDAO {
 
     public Usuario obtenerSesion(String usuario, String password) {
         UsuarioDAO();
-        
+
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -89,5 +90,107 @@ public class UsuarioDAO {
             return null;
         }
     }
-    
+
+    public boolean crearUsuario(Usuario usuario) {
+        UsuarioDAO();
+
+        EncriptadorAES encriptadorAES = new EncriptadorAES();
+
+        PreparedStatement ps = null;
+
+        try {
+            ps = conexion.prepareStatement("INSERT INTO `bawuh1cvaadk7k8ml9wu`.`usuario`\n"
+                    + "(`usuario`,\n"
+                    + "`password`,\n"
+                    + "`tipo`)\n"
+                    + "VALUES\n"
+                    + "(?,\n"
+                    + "?,\n"
+                    + "?);");
+            ps.setString(1, usuario.getUsuario());
+            ps.setString(2, encriptadorAES.encriptar(usuario.getPassword()));
+            ps.setString(3, usuario.getTipo());
+
+            if (encriptadorAES.encriptar(usuario.getPassword()) == null) {
+                ps.close();
+                conexion.close();
+                con.cerrarConexion();
+                return false;
+            }
+
+            boolean validacion = ps.execute();
+
+            ps.close();
+            conexion.close();
+            con.cerrarConexion();
+            return validacion;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            con.cerrarConexion();
+            return false;
+        }
+    }
+
+    public boolean actualizarUsuario(String usuarioAntiguo, Usuario usuario) {
+        UsuarioDAO();
+
+        EncriptadorAES encriptadorAES = new EncriptadorAES();
+
+        PreparedStatement ps = null;
+
+        try {
+            ps = conexion.prepareStatement("UPDATE `bawuh1cvaadk7k8ml9wu`.`usuario`\n"
+                    + "SET\n"
+                    + "`usuario` = ?,\n"
+                    + "`password` = ?"
+                    + "WHERE `usuario` = ?;");
+            ps.setString(1, usuario.getUsuario());
+            ps.setString(2, encriptadorAES.encriptar(usuario.getPassword()));
+            ps.setString(3, usuarioAntiguo);
+
+            if (encriptadorAES.encriptar(usuario.getPassword()) == null) {
+                ps.close();
+                conexion.close();
+                con.cerrarConexion();
+                return false;
+            }
+
+            boolean validacion = ps.execute();
+
+            ps.close();
+            conexion.close();
+            con.cerrarConexion();
+            return validacion;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            con.cerrarConexion();
+            return false;
+        }
+    }
+
+    public boolean eliminarUsuario(String usuario) {
+        UsuarioDAO();
+
+        EncriptadorAES encriptadorAES = new EncriptadorAES();
+
+        PreparedStatement ps = null;
+
+        try {
+            ps = conexion.prepareStatement("DELETE FROM `bawuh1cvaadk7k8ml9wu`.`usuario`\n"
+                    + "WHERE `usuario` = ?;;");
+            ps.setString(1, usuario);
+
+            boolean validacion = ps.execute();
+
+            ps.close();
+            conexion.close();
+            con.cerrarConexion();
+            return validacion;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            con.cerrarConexion();
+            return false;
+        }
+    }
+
 }

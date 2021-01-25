@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import modelos.Medico;
+import modelos.MedicoDAO;
 import modelos.Usuario;
 
 /**
@@ -73,7 +75,16 @@ public class Inicio extends HttpServlet {
         } else {
 
             if (accion == null || accion.isEmpty()) {
-                dispatcher = request.getRequestDispatcher("Ventanas/inicio.jsp");
+                dispatcher = request.getRequestDispatcher("Ventanas/InicioAdmin.jsp");
+                if (user.getTipo().equalsIgnoreCase("Administrador")){
+                    request.setAttribute("Usuario", null);
+                } else if (user.getTipo().equalsIgnoreCase("Medico")){
+                    MedicoDAO controlador = new MedicoDAO();
+                    Medico medico = controlador.obtenerInfoSesion(user.getId());
+                    request.setAttribute("Usuario", medico.getNombre());
+                } else {
+                    request.setAttribute("Usuario", null);
+                }
             }
             if ("Logout".equals(accion)) {
                 sesion.invalidate();

@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="es_mx">
     <head>
@@ -16,9 +17,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="Estilos/EstiloMenus.css">
+        <link rel="stylesheet" href="Estilos/EstiloLogin.css">
     </head>
     <body>
-        <div class="area"></div>
+        <div class="inicio-sesion">
+            <h1>Bienvenido <c:out value="${Usuario}"/></h1>
+        </div>
+        <div class="fondo"></div>
         <nav class="main-menu">
             <ul>
                 <li>
@@ -32,60 +37,44 @@
                 </li>
                 <li class="has-subnav">
                     <a href="">
-                        <i class="fas fa-laptop-medical"></i>
+                        <i class="far fa-user-circle"></i>
                         <span class="nav-text">
-                            Programar Citas
+                            Menú Pacientes
                         </span>
                     </a>
 
                 </li>
                 <li class="has-subnav">
                     <a href="">
-                        <i class="fas fa-clipboard-list"></i>
+                        <i class="fas fa-user-md"></i>
                         <span class="nav-text">
-                            Lista de Citas
+                            Menú Medicos
                         </span>
                     </a>
 
                 </li>
                 <li class="has-subnav">
                     <a href="">
-                        <i class="far fa-folder-open"></i>
+                        <i class="fas fa-users"></i>
                         <span class="nav-text">
-                            Archivo de Pacientes
+                            Menú Personal
                         </span>
                     </a>
 
-                </li>
-                <li>
-                    <a href="">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span class="nav-text">
-                            Desempeño del Personal
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <i class="fas fa-pencil-alt"></i>
-                        <span class="nav-text">
-                            Editar Información
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <i class="fas fa-address-card"></i>
-                        <span class="nav-text">
-                            Información de Personal
-                        </span>
-                    </a>
                 </li>
                 <li>
                     <a href="">
                         <i class="fas fa-luggage-cart"></i>
                         <span class="nav-text">
-                            Infromación Vacacional
+                            Menú Vacaciones
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="fas fa-book-medical"></i>
+                        <span class="nav-text">
+                            Menú Citas
                         </span>
                     </a>
                 </li>

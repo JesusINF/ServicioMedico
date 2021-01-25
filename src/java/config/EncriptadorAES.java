@@ -7,6 +7,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -47,17 +49,37 @@ public class EncriptadorAES {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException 
      */
-    public String encriptar(String datos) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-        SecretKeySpec secretKey = this.crearClave("MedicoServicio");
-        
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");        
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-
-        byte[] datosEncriptar = datos.getBytes("UTF-8");
-        byte[] bytesEncriptados = cipher.doFinal(datosEncriptar);
-        String encriptado = Base64.getEncoder().encodeToString(bytesEncriptados);
-
-        return encriptado;
+    public String encriptar(String datos) {
+        try {
+            SecretKeySpec secretKey = this.crearClave("MedicoServicio");
+            
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            
+            byte[] datosEncriptar = datos.getBytes("UTF-8");
+            byte[] bytesEncriptados = cipher.doFinal(datosEncriptar);
+            String encriptado = Base64.getEncoder().encodeToString(bytesEncriptados);
+            
+            return encriptado;
+        } catch (UnsupportedEncodingException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (NoSuchPaddingException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (InvalidKeyException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (IllegalBlockSizeException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (BadPaddingException ex) {
+            System.out.println(ex.toString());
+            return null;
+        }
     }
 
     /**
@@ -72,16 +94,36 @@ public class EncriptadorAES {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException 
      */
-    public String desencriptar(String datosEncriptados) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-        SecretKeySpec secretKey = this.crearClave("MedicoServicio");
-
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-        
-        byte[] bytesEncriptados = Base64.getDecoder().decode(datosEncriptados);
-        byte[] datosDesencriptados = cipher.doFinal(bytesEncriptados);
-        String datos = new String(datosDesencriptados);
-        
-        return datos;
+    public String desencriptar(String datosEncriptados){
+        try {
+            SecretKeySpec secretKey = this.crearClave("MedicoServicio");
+            
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            
+            byte[] bytesEncriptados = Base64.getDecoder().decode(datosEncriptados);
+            byte[] datosDesencriptados = cipher.doFinal(bytesEncriptados);
+            String datos = new String(datosDesencriptados);
+            
+            return datos;
+        } catch (UnsupportedEncodingException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (NoSuchPaddingException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (InvalidKeyException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (IllegalBlockSizeException ex) {
+            System.out.println(ex.toString());
+            return null;
+        } catch (BadPaddingException ex) {
+            System.out.println(ex.toString());
+            return null;
+        }
     }
 }
