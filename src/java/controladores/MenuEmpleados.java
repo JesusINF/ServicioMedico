@@ -24,8 +24,8 @@ import modelos.Usuario;
  *
  * @author jesus
  */
-@WebServlet(name = "Inicio", urlPatterns = {"/Inicio"})
-public class Inicio extends HttpServlet {
+@WebServlet(name = "MenuEmpleados", urlPatterns = {"/MenuEmpleados"})
+public class MenuEmpleados extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +44,10 @@ public class Inicio extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Inicio</title>");
+            out.println("<title>Servlet MenuEmpledos</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Inicio at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MenuEmpledos at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -78,23 +78,44 @@ public class Inicio extends HttpServlet {
 
             if (accion == null || accion.isEmpty()) {
                 if (user.getTipo().equalsIgnoreCase("Administrador") || user.getTipo().equalsIgnoreCase("Programador")){
-                    EmpleadoDAO controlador = new EmpleadoDAO();
-                    Empleado empleado = controlador.obtenerInfoSesion(user.getId());
-                    request.setAttribute("Usuario", empleado.getNombre());
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosAdmin.jsp");
                 } else if (user.getTipo().equalsIgnoreCase("Medico")){
-                    MedicoDAO controlador = new MedicoDAO();
-                    Medico medico = controlador.obtenerInfoSesion(user.getId());
-                    request.setAttribute("Usuario", medico.getNombre());
+                    dispatcher = request.getRequestDispatcher("error.jsp");
                 } else {
-                    EmpleadoDAO controlador = new EmpleadoDAO();
-                    Empleado empleado = controlador.obtenerInfoSesion(user.getId());
-                   request.setAttribute("Usuario", empleado.getNombre());
+                    dispatcher = request.getRequestDispatcher("error.jsp");
                 }
-                dispatcher = request.getRequestDispatcher("Ventanas/InicioAdmin.jsp");
+                
             } else if ("Logout".equals(accion)) {
                 sesion.invalidate();
                 response.sendRedirect("Login");
                 return;
+            } else if("Registrar".equals(accion)){
+                dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosAdmiRegis.jsp");
+            } else if("Insert".equals(accion)){
+                String Nombre = request.getParameter("Nombre");
+                String Direccion = request.getParameter("Direccion");
+                String Telefono = request.getParameter("Telefono");
+                String Cp = request.getParameter("Cp");
+                String Curp = request.getParameter("Curp");
+                String Nss = request.getParameter("Nss");
+                String Tipo = request.getParameter("Tipo");
+                String Usuario = request.getParameter("Usuario");
+                String Password = request.getParameter("Password");
+                
+                Empleado empleado = new Empleado(0, Nombre, Direccion, Telefono, Cp, Curp, Nss, Tipo, 0);
+                Usuario usuario = new Usuario(0, Usuario, Password, Tipo);
+                
+                EmpleadoDAO controlador = new EmpleadoDAO();
+                
+                boolean validar;
+                validar = controlador.registroEmpleado(empleado, usuario);
+                
+                if(!validar){
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosAdmin.jsp");
+                }else {
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosAdmiRegis.jsp");
+                }
+                
             }
         }
         dispatcher.forward(request, response);

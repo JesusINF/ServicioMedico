@@ -11,10 +11,10 @@ package modelos;
  */
 public class Empleado {
     private int id;
-    private String nombre,direccion,telefono,cp,curp,nss;
+    private String nombre,direccion,telefono,cp,curp,nss,tipo;
     private int idUsuario;
 
-    public Empleado(int id, String nombre, String direccion, String telefono, String cp, String curp, String nss, int idUsuario) {
+    public Empleado(int id, String nombre, String direccion, String telefono, String cp, String curp, String nss, String tipo, int idUsuario) {
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -22,7 +22,16 @@ public class Empleado {
         this.cp = cp;
         this.curp = curp;
         this.nss = nss;
+        this.tipo = tipo;
         this.idUsuario = idUsuario;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public int getId() {

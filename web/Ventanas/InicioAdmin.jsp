@@ -36,7 +36,7 @@
 
                 </li>
                 <li class="has-subnav">
-                    <a href="">
+                    <a href="MenuPacientes">
                         <i class="far fa-user-circle"></i>
                         <span class="nav-text">
                             Menú Pacientes
@@ -45,7 +45,7 @@
 
                 </li>
                 <li class="has-subnav">
-                    <a href="">
+                    <a href="MenuMedicos">
                         <i class="fas fa-user-md"></i>
                         <span class="nav-text">
                             Menú Medicos
@@ -54,7 +54,7 @@
 
                 </li>
                 <li class="has-subnav">
-                    <a href="">
+                    <a href="MenuEmpleados">
                         <i class="fas fa-users"></i>
                         <span class="nav-text">
                             Menú Personal
@@ -63,7 +63,7 @@
 
                 </li>
                 <li>
-                    <a href="">
+                    <a href="MenuVacaciones">
                         <i class="fas fa-luggage-cart"></i>
                         <span class="nav-text">
                             Menú Vacaciones
@@ -71,7 +71,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="MenuCitas">
                         <i class="fas fa-book-medical"></i>
                         <span class="nav-text">
                             Menú Citas

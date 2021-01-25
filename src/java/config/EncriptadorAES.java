@@ -61,22 +61,7 @@ public class EncriptadorAES {
             String encriptado = Base64.getEncoder().encodeToString(bytesEncriptados);
             
             return encriptado;
-        } catch (UnsupportedEncodingException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (NoSuchAlgorithmException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (NoSuchPaddingException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (InvalidKeyException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (IllegalBlockSizeException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (BadPaddingException ex) {
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             System.out.println(ex.toString());
             return null;
         }
@@ -106,22 +91,7 @@ public class EncriptadorAES {
             String datos = new String(datosDesencriptados);
             
             return datos;
-        } catch (UnsupportedEncodingException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (NoSuchAlgorithmException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (NoSuchPaddingException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (InvalidKeyException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (IllegalBlockSizeException ex) {
-            System.out.println(ex.toString());
-            return null;
-        } catch (BadPaddingException ex) {
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             System.out.println(ex.toString());
             return null;
         }

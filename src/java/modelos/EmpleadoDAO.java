@@ -58,7 +58,7 @@ public class EmpleadoDAO {
                 String curp = rs.getString("curp");
                 String nss = rs.getString("nss");
                 String tipo = rs.getString("tipo");
-                
+
                 empleado = new Empleado(id, nombre, direccion, telefono, cp, curp, nss, tipo, idUsuario);
             }
 
@@ -73,7 +73,7 @@ public class EmpleadoDAO {
             return null;
         }
     }
-    
+
     public Empleado obtenerInfo(String nombre) {
         EmpleadoDAO();
 
@@ -106,7 +106,7 @@ public class EmpleadoDAO {
                 String nss = rs.getString("nss");
                 String tipo = rs.getString("tipo");
                 int idUsuario = rs.getInt("usuario_idusuario");
-                
+
                 empleado = new Empleado(id, nombre, direccion, telefono, cp, curp, nss, tipo, idUsuario);
             }
 
@@ -121,8 +121,8 @@ public class EmpleadoDAO {
             return null;
         }
     }
-    
-    private ArrayList<String> listaEmpleados(){
+
+    public ArrayList<String> listaEmpleados() {
         EmpleadoDAO();
 
         PreparedStatement ps = null;
@@ -136,7 +136,7 @@ public class EmpleadoDAO {
             Empleado empleado = null;
 
             ArrayList<String> nombre = new ArrayList<>();
-            
+
             while (rs.next()) {
                 nombre.add(rs.getString("nombre"));
             }
@@ -150,6 +150,80 @@ public class EmpleadoDAO {
             System.out.println(e.toString());
             con.cerrarConexion();
             return null;
+        }
+    }
+
+    public boolean registroEmpleado(Empleado empleado, Usuario usuario) {
+
+        UsuarioDAO controlador = new UsuarioDAO();
+        boolean insertoUsuario;
+        insertoUsuario = controlador.crearUsuario(usuario);
+        
+        Usuario usuarioId = null;
+        usuarioId = controlador.obtenerSesion(usuario.getUsuario(), usuario.getPassword());
+
+        EmpleadoDAO();
+
+        PreparedStatement ps = null;
+
+        try {
+            ps = conexion.prepareStatement("INSERT INTO `bawuh1cvaadk7k8ml9wu`.`empleados`\n"
+                    + "(`nombre`,\n"
+                    + "`direccion`,\n"
+                    + "`telefono`,\n"
+                    + "`cp`,\n"
+                    + "`curp`,\n"
+                    + "`nss`,\n"
+                    + "`tipo`,\n"
+                    + "`usuario_idusuario`)\n"
+                    + "VALUES\n"
+                    + "(?,\n"
+                    + "?,\n"
+                    + "?,\n"
+                    + "?,\n"
+                    + "?,\n"
+                    + "?,\n"
+                    + "?,\n"
+                    + "?);");
+            ps.setString(1, empleado.getNombre());
+            ps.setString(2, empleado.getDireccion());
+            ps.setString(3, empleado.getTelefono());
+            ps.setString(4, empleado.getCp());
+            ps.setString(5, empleado.getCurp());
+            ps.setString(6, empleado.getNss());
+            ps.setString(7, empleado.getTipo());
+            ps.setInt(8, usuarioId.getId());
+
+            boolean validacion;
+            
+            int i;
+            i = ps.executeUpdate();
+            
+            if(i == 0){
+                validacion = false;
+            } else{
+                validacion = true;
+            }
+
+            if (!insertoUsuario || !validacion) {
+                if (insertoUsuario) {
+                    controlador.eliminarUsuario(usuarioId.getUsuario());
+                }
+                ps.close();
+                conexion.close();
+                con.cerrarConexion();
+                return false;
+            } else {
+                ps.close();
+                conexion.close();
+                con.cerrarConexion();
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            con.cerrarConexion();
+            return false;
         }
     }
 }

@@ -29,6 +29,7 @@ public class UsuarioDAO {
     public boolean login(String usuario, String password) {
         UsuarioDAO();
 
+        EncriptadorAES encriptadorAES = new EncriptadorAES();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -36,7 +37,7 @@ public class UsuarioDAO {
 
             ps = conexion.prepareStatement("SELECT * FROM `bawuh1cvaadk7k8ml9wu`.`usuario` WHERE `usuario`.`usuario` = ? AND `usuario`.`password` = ?;");
             ps.setString(1, usuario);
-            ps.setString(2, password);
+            ps.setString(2, encriptadorAES.encriptar(password));
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -60,23 +61,26 @@ public class UsuarioDAO {
 
     public Usuario obtenerSesion(String usuario, String password) {
         UsuarioDAO();
+        
+        EncriptadorAES encriptadorAES = new EncriptadorAES();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
 
-            ps = conexion.prepareStatement("SELECT `usuario`.`tipo` FROM `bawuh1cvaadk7k8ml9wu`.`usuario` WHERE `usuario`.`usuario` = ? AND `usuario`.`password` = ?;");
+            ps = conexion.prepareStatement("SELECT `usuario`.`idusuario`, `usuario`.`tipo` FROM `bawuh1cvaadk7k8ml9wu`.`usuario` WHERE `usuario`.`usuario` = ? AND `usuario`.`password` = ?;");
             ps.setString(1, usuario);
-            ps.setString(2, password);
+            ps.setString(2, encriptadorAES.encriptar(password));
             rs = ps.executeQuery();
 
             Usuario user = null;
 
             while (rs.next()) {
+                int id = rs.getInt("idusuario");
                 String tipo = rs.getString("tipo");
 
-                user = new Usuario(0, usuario, password, tipo);
+                user = new Usuario(id, usuario, password, tipo);
             }
 
             ps.close();
@@ -118,7 +122,15 @@ public class UsuarioDAO {
                 return false;
             }
 
-            boolean validacion = ps.execute();
+            boolean validacion; 
+            int i;
+            i = ps.executeUpdate();
+            
+            if(i == 0){
+                validacion = false;
+            } else{
+                validacion = true;
+            }
 
             ps.close();
             conexion.close();
@@ -177,10 +189,19 @@ public class UsuarioDAO {
 
         try {
             ps = conexion.prepareStatement("DELETE FROM `bawuh1cvaadk7k8ml9wu`.`usuario`\n"
-                    + "WHERE `usuario` = ?;;");
+                    + "WHERE `usuario` = ?;");
             ps.setString(1, usuario);
 
-            boolean validacion = ps.execute();
+            boolean validacion;
+            
+            int i;
+            i = ps.executeUpdate();
+            
+            if(i == 0){
+                validacion = false;
+            } else{
+                validacion = true;
+            }
 
             ps.close();
             conexion.close();

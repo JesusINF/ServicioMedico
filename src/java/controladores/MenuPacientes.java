@@ -7,25 +7,18 @@ package controladores;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import modelos.Empleado;
-import modelos.EmpleadoDAO;
-import modelos.Medico;
-import modelos.MedicoDAO;
-import modelos.Usuario;
 
 /**
  *
  * @author jesus
  */
-@WebServlet(name = "Inicio", urlPatterns = {"/Inicio"})
-public class Inicio extends HttpServlet {
+@WebServlet(name = "MenuPacientes", urlPatterns = {"/MenuPacientes"})
+public class MenuPacientes extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +37,10 @@ public class Inicio extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Inicio</title>");
+            out.println("<title>Servlet MenuPacientes</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Inicio at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MenuPacientes at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,39 +58,7 @@ public class Inicio extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String accion;
-        RequestDispatcher dispatcher = null;
-        HttpSession sesion = request.getSession();
-        Usuario user = (Usuario) sesion.getAttribute("login");
-
-        accion = request.getParameter("accion");
-
-        if (user == null) {
-            dispatcher = request.getRequestDispatcher("error.jsp");
-        } else {
-
-            if (accion == null || accion.isEmpty()) {
-                if (user.getTipo().equalsIgnoreCase("Administrador") || user.getTipo().equalsIgnoreCase("Programador")){
-                    EmpleadoDAO controlador = new EmpleadoDAO();
-                    Empleado empleado = controlador.obtenerInfoSesion(user.getId());
-                    request.setAttribute("Usuario", empleado.getNombre());
-                } else if (user.getTipo().equalsIgnoreCase("Medico")){
-                    MedicoDAO controlador = new MedicoDAO();
-                    Medico medico = controlador.obtenerInfoSesion(user.getId());
-                    request.setAttribute("Usuario", medico.getNombre());
-                } else {
-                    EmpleadoDAO controlador = new EmpleadoDAO();
-                    Empleado empleado = controlador.obtenerInfoSesion(user.getId());
-                   request.setAttribute("Usuario", empleado.getNombre());
-                }
-                dispatcher = request.getRequestDispatcher("Ventanas/InicioAdmin.jsp");
-            } else if ("Logout".equals(accion)) {
-                sesion.invalidate();
-                response.sendRedirect("Login");
-                return;
-            }
-        }
-        dispatcher.forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -111,7 +72,7 @@ public class Inicio extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        processRequest(request, response);
     }
 
     /**

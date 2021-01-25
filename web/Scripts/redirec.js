@@ -1,5 +1,5 @@
 $(document).ready(function () {
-            var i = 6;
+            var i = 3;
             setInterval(function () {
                 i--;
                 if (i < 1) {
