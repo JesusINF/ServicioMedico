@@ -7,18 +7,19 @@ package controladores;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelos.Empleado;
 import modelos.EmpleadoDAO;
-import modelos.Medico;
-import modelos.MedicoDAO;
 import modelos.Usuario;
+import modelos.UsuarioDAO;
 
 /**
  *
@@ -44,7 +45,7 @@ public class MenuEmpleados extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MenuEmpledos</title>");            
+            out.println("<title>Servlet MenuEmpledos</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet MenuEmpledos at " + request.getContextPath() + "</h1>");
@@ -75,23 +76,23 @@ public class MenuEmpleados extends HttpServlet {
         if (user == null) {
             dispatcher = request.getRequestDispatcher("error.jsp");
         } else {
-
+            request.setAttribute("Nivel", user.getTipo());
             if (accion == null || accion.isEmpty()) {
-                if (user.getTipo().equalsIgnoreCase("Administrador") || user.getTipo().equalsIgnoreCase("Programador")){
-                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosAdmin.jsp");
-                } else if (user.getTipo().equalsIgnoreCase("Medico")){
+                if (user.getTipo().equalsIgnoreCase("Administrador") || user.getTipo().equalsIgnoreCase("Programador")) {
+                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                } else if (user.getTipo().equalsIgnoreCase("Medico")) {
                     dispatcher = request.getRequestDispatcher("error.jsp");
                 } else {
                     dispatcher = request.getRequestDispatcher("error.jsp");
                 }
-                
+
             } else if ("Logout".equals(accion)) {
                 sesion.invalidate();
                 response.sendRedirect("Login");
                 return;
-            } else if("Registrar".equals(accion)){
-                dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosAdmiRegis.jsp");
-            } else if("Insert".equals(accion)){
+            } else if ("Registrar".equals(accion)) {
+                dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosRegistro.jsp");
+            } else if ("Insert".equals(accion)) {
                 String Nombre = request.getParameter("Nombre");
                 String Direccion = request.getParameter("Direccion");
                 String Telefono = request.getParameter("Telefono");
@@ -101,21 +102,176 @@ public class MenuEmpleados extends HttpServlet {
                 String Tipo = request.getParameter("Tipo");
                 String Usuario = request.getParameter("Usuario");
                 String Password = request.getParameter("Password");
-                
+
                 Empleado empleado = new Empleado(0, Nombre, Direccion, Telefono, Cp, Curp, Nss, Tipo, 0);
                 Usuario usuario = new Usuario(0, Usuario, Password, Tipo);
-                
+
                 EmpleadoDAO controlador = new EmpleadoDAO();
-                
+
                 boolean validar;
                 validar = controlador.registroEmpleado(empleado, usuario);
-                
-                if(!validar){
-                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosAdmin.jsp");
-                }else {
-                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosAdmiRegis.jsp");
+
+                if (!validar) {
+                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                } else {
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosRegistro.jsp");
                 }
+
+            } else if ("Actualizar".equals(accion)) {
+                request.setAttribute("Busca", "Busca");
+                EmpleadoDAO controladorEmp = new EmpleadoDAO();
+
+                ArrayList<String> nombres = null;
+                nombres = controladorEmp.listaEmpleados();
+                request.setAttribute("Lista", nombres);
+                dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
+            } else if ("Busca".equals(accion)) {
+                EmpleadoDAO controladorEmp = new EmpleadoDAO();
+
+                String Nss = request.getParameter("browsers");
+
+                String[] partes = Nss.split(" - ");
+
+                Nss = partes[partes.length - 1];
+
+                Empleado empleado = null;
+
+                empleado = controladorEmp.obtenerInfo(Nss);
+
+                if (empleado == null) {
+                    System.out.println("Empleado");
+                    request.setAttribute("Busca", "Busca");
+                    ArrayList<String> nombres = null;
+                    nombres = controladorEmp.listaEmpleados();
+                    request.setAttribute("Lista", nombres);
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
+                } else {
+                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+                    Usuario usuario = null;
+                    usuario = usuarioDAO.obtenerUsuario(empleado.getIdUsuario());
+
+                    if (usuario == null) {
+                        System.out.println("usuario");
+                        ArrayList<String> nombres = null;
+                        nombres = controladorEmp.listaEmpleados();
+                        request.setAttribute("Lista", nombres);
+                        request.setAttribute("Busca", "Busca");
+                        dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
+                    } else {
+                        request.setAttribute("Emp", empleado);
+                        request.setAttribute("User", usuario);
+
+                        Cookie galletaUsuario = new Cookie("User", Integer.toString(usuario.getId()));
+                        galletaUsuario.setMaxAge(1000);
+                        response.addCookie(galletaUsuario);
+
+                        request.setAttribute("Actualiza", "Actualiza");
+                        dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
+                    }
+                }
+
+            } else if ("Actualiza".equals(accion)) {
+                String Nombre = request.getParameter("Nombre");
+                String Direccion = request.getParameter("Direccion");
+                String Telefono = request.getParameter("Telefono");
+                String Cp = request.getParameter("Cp");
+                String Curp = request.getParameter("Curp");
+                String Nss = request.getParameter("Nss");
+                String Tipo = request.getParameter("Tipo");
+                String Usuario = request.getParameter("Usuario");
+                String Password = request.getParameter("Password");
+
+                Empleado empleado = new Empleado(0, Nombre, Direccion, Telefono, Cp, Curp, Nss, Tipo, 0);
+                Usuario usuario = new Usuario(0, Usuario, Password, Tipo);
+
+                Usuario usuarioAntiguo = null;
+
+                Cookie[] galletaId = request.getCookies();
+                int id = 0;
+                for (Cookie cookie : galletaId) {
+                    if (cookie.getName().equalsIgnoreCase("User")) {
+                        id = Integer.parseInt(cookie.getValue());
+                        break;
+                    }
+                }
+
+                UsuarioDAO controladorUsuario = new UsuarioDAO();
+                EmpleadoDAO controladroEmpleado = new EmpleadoDAO();
+
+                usuarioAntiguo = controladorUsuario.obtenerUsuario(id);
+
+                boolean validar;
+                validar = controladroEmpleado.ActualizaEmpleado(empleado, usuario, usuarioAntiguo);
+
+                if (validar) {
+                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                } else {
+                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                }
+            } else if ("Eliminar".equals(accion)) {
+                request.setAttribute("Busca", "Busca");
+                EmpleadoDAO controladorEmp = new EmpleadoDAO();
+
+                ArrayList<String> nombres = null;
+                nombres = controladorEmp.listaEmpleados();
+                request.setAttribute("Lista", nombres);
+                dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
+            } else if ("BuscaElimina".equalsIgnoreCase(accion)) {
+                EmpleadoDAO controladorEmp = new EmpleadoDAO();
+
+                String Nss = request.getParameter("browsers");
+
+                String[] partes = Nss.split(" - ");
+
+                Nss = partes[partes.length - 1];
+
+                Empleado empleado = null;
+
+                empleado = controladorEmp.obtenerInfo(Nss);
+
+                if (empleado == null) {
+                    System.out.println("Empleado");
+                    request.setAttribute("Busca", "Busca");
+                    ArrayList<String> nombres = null;
+                    nombres = controladorEmp.listaEmpleados();
+                    request.setAttribute("Lista", nombres);
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
+                } else {
+                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+                    Usuario usuario = null;
+                    usuario = usuarioDAO.obtenerUsuario(empleado.getIdUsuario());
+
+                    if (usuario == null) {
+                        System.out.println("usuario");
+                        ArrayList<String> nombres = null;
+                        nombres = controladorEmp.listaEmpleados();
+                        request.setAttribute("Lista", nombres);
+                        request.setAttribute("Busca", "Busca");
+                        dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
+                    } else {
+                        request.setAttribute("Emp", empleado);
+                        request.setAttribute("User", usuario);
+
+                        request.setAttribute("Actualiza", "Actualiza");
+                        dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
+                    }
+                }
+            } else if ("Elimina".equals(accion)) {
+                EmpleadoDAO controladroEmpleado = new EmpleadoDAO();
                 
+                String Nss = request.getParameter("Nss");
+                String Usuario = request.getParameter("Usuario");
+
+                boolean validar;
+                validar = controladroEmpleado.EliminarEmpleado(Nss, Usuario);
+
+                if (validar) {
+                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                } else {
+                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                }
             }
         }
         dispatcher.forward(request, response);

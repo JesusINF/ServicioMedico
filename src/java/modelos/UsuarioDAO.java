@@ -94,6 +94,42 @@ public class UsuarioDAO {
             return null;
         }
     }
+    
+    public Usuario obtenerUsuario(int id) {
+        UsuarioDAO();
+        
+        EncriptadorAES encriptadorAES = new EncriptadorAES();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+
+            ps = conexion.prepareStatement("SELECT `usuario`.`idusuario`, `usuario`.`usuario`, `usuario`.`password`,  `usuario`.`tipo` FROM `bawuh1cvaadk7k8ml9wu`.`usuario` WHERE `usuario`.`idusuario` = ?;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            Usuario user = null;
+
+            while (rs.next()) {
+                String usuario = rs.getString("usuario");
+                String password = encriptadorAES.desencriptar(rs.getString("password"));
+                String tipo = rs.getString("tipo");
+
+                user = new Usuario(id, usuario, password, tipo);
+            }
+
+            ps.close();
+            rs.close();
+            conexion.close();
+            con.cerrarConexion();
+            return user;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            con.cerrarConexion();
+            return null;
+        }
+    }
 
     public boolean crearUsuario(Usuario usuario) {
         UsuarioDAO();
@@ -143,7 +179,7 @@ public class UsuarioDAO {
         }
     }
 
-    public boolean actualizarUsuario(String usuarioAntiguo, Usuario usuario) {
+    public boolean actualizarUsuario(int usuarioAntiguo, Usuario usuario) {
         UsuarioDAO();
 
         EncriptadorAES encriptadorAES = new EncriptadorAES();
@@ -154,11 +190,13 @@ public class UsuarioDAO {
             ps = conexion.prepareStatement("UPDATE `bawuh1cvaadk7k8ml9wu`.`usuario`\n"
                     + "SET\n"
                     + "`usuario` = ?,\n"
-                    + "`password` = ?"
-                    + "WHERE `usuario` = ?;");
+                    + "`password` = ?,\n"
+                    + "`tipo` = ?"
+                    + "WHERE `idusuario` = ?;");
             ps.setString(1, usuario.getUsuario());
             ps.setString(2, encriptadorAES.encriptar(usuario.getPassword()));
-            ps.setString(3, usuarioAntiguo);
+            ps.setString(3, usuario.getTipo());
+            ps.setInt(4, usuarioAntiguo);
 
             if (encriptadorAES.encriptar(usuario.getPassword()) == null) {
                 ps.close();
@@ -167,7 +205,15 @@ public class UsuarioDAO {
                 return false;
             }
 
-            boolean validacion = ps.execute();
+            boolean validacion; 
+            int i;
+            i = ps.executeUpdate();
+            
+            if(i == 0){
+                validacion = false;
+            } else{
+                validacion = true;
+            }
 
             ps.close();
             conexion.close();
@@ -182,8 +228,6 @@ public class UsuarioDAO {
 
     public boolean eliminarUsuario(String usuario) {
         UsuarioDAO();
-
-        EncriptadorAES encriptadorAES = new EncriptadorAES();
 
         PreparedStatement ps = null;
 

@@ -59,6 +59,18 @@ body {
     font-size: 18px;
 }
 
+.Busca {
+    display: none;
+}
+
+.Block{
+    pointer-events: none;
+}
+
+.Actualiza {
+    display: none;
+}
+
 .Form{
     padding-top: 0%;
 }
@@ -108,6 +120,14 @@ input:focus:-ms-input-placeholder {
     margin: auto;
     max-width: 50%;
     padding: .5rem;
+}
+
+.Menu {
+    min-height: 10rem;
+}
+
+.Menu .login-submit{
+    font-size: 40px;
 }
 
 .login-username, .login-password {

@@ -75,7 +75,7 @@ public class Inicio extends HttpServlet {
         if (user == null) {
             dispatcher = request.getRequestDispatcher("error.jsp");
         } else {
-
+            request.setAttribute("Nivel", user.getTipo());
             if (accion == null || accion.isEmpty()) {
                 if (user.getTipo().equalsIgnoreCase("Administrador") || user.getTipo().equalsIgnoreCase("Programador")){
                     EmpleadoDAO controlador = new EmpleadoDAO();
@@ -90,7 +90,7 @@ public class Inicio extends HttpServlet {
                     Empleado empleado = controlador.obtenerInfoSesion(user.getId());
                    request.setAttribute("Usuario", empleado.getNombre());
                 }
-                dispatcher = request.getRequestDispatcher("Ventanas/InicioAdmin.jsp");
+                dispatcher = request.getRequestDispatcher("Ventanas/Inicio.jsp");
             } else if ("Logout".equals(accion)) {
                 sesion.invalidate();
                 response.sendRedirect("Login");
