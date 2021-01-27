@@ -21,21 +21,21 @@
     </head>
     <body>
         <div class="Form inicio-sesion">
-            <h1>Menú Empleados</h1>
-            <form class="Menu login-form" action="MenuEmpleados?accion=Registrar" method="POST" autocomplete="off">
+            <h1>Menú Medicos</h1>
+            <form class="Menu login-form" action="MenuMedicos?accion=Registrar" method="POST" autocomplete="off">
                 <input type="submit" name="Resgistrar" value="Registrar" class="login-submit" />
             </form>
-            <form class="Menu login-form" action="MenuEmpleados?accion=Actualizar" method="POST" autocomplete="off">
+            <form class="Menu login-form" action="MenuMedicos?accion=Actualizar" method="POST" autocomplete="off">
                 <input type="submit" name="Actualizar" value="Actualizar" class="login-submit" />
             </form>
-            <form class="Menu login-form" action="MenuEmpleados?accion=Eliminar" method="POST" autocomplete="off">
+            <form class="Menu login-form" action="MenuMedicos?accion=Eliminar" method="POST" autocomplete="off">
                 <input type="submit" name="Eliminar" value="Eliminar" class="login-submit" />
             </form>
         </div>
         <div id="popup1" class="<c:out value="${pop}"/> overlay">
             <div class="popup">
                 <h2>Registro Exitoso</h2>
-                <a class="close" href="MenuEmpleados">&times;</a>
+                <a class="close" href="MenuMedicos">&times;</a>
                 <div class="content">
                     Su registro ha sido exitoso.
                 </div>
@@ -44,7 +44,7 @@
         <div id="popup1" class="<c:out value="${pop2}"/> overlay">
             <div class="popup">
                 <h2>Actualización Exitosa</h2>
-                <a class="close" href="MenuEmpleados">&times;</a>
+                <a class="close" href="MenuMedicos">&times;</a>
                 <div class="content">
                     Su actualización ha sido exitosa.
                 </div>
@@ -53,7 +53,7 @@
         <div id="popup1" class="<c:out value="${pop3}"/> overlay">
             <div class="popup">
                 <h2>Eliminación Exitosa</h2>
-                <a class="close" href="MenuEmpleados">&times;</a>
+                <a class="close" href="MenuMedicos">&times;</a>
                 <div class="content">
                     Su eliminación ha sido exitosa.
                 </div>

@@ -158,9 +158,17 @@ public class EmpleadoDAO {
         UsuarioDAO controlador = new UsuarioDAO();
         boolean insertoUsuario;
         insertoUsuario = controlador.crearUsuario(usuario);
+        
+        if(!insertoUsuario){
+            return false;
+        }
 
         Usuario usuarioId = null;
         usuarioId = controlador.obtenerSesion(usuario.getUsuario(), usuario.getPassword());
+        
+        if(usuarioId == null){
+            return false;
+        }
 
         EmpleadoDAO();
 

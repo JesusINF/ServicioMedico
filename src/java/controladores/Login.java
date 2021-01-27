@@ -76,9 +76,13 @@ public class Login extends HttpServlet {
             String usuario = request.getParameter("usuario");
             String password = request.getParameter("password");
             
-            if(usuariosDAO.login(usuario, password)){
+            boolean validacion;
+            validacion = usuariosDAO.login(usuario, password);
+            
+            if(validacion){
                 HttpSession session = request.getSession();
-                Usuario user = usuariosDAO.obtenerSesion(usuario, password);
+                Usuario user = null;
+                user = usuariosDAO.obtenerSesion(usuario, password);
                 session.setAttribute("login", user);
                 response.sendRedirect("Inicio");
                 return;

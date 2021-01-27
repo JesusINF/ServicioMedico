@@ -110,8 +110,8 @@ public class MenuEmpleados extends HttpServlet {
 
                 boolean validar;
                 validar = controlador.registroEmpleado(empleado, usuario);
-
-                if (!validar) {
+                request.setAttribute("pop", "popOpen");
+                if (validar) {
                     dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
                 } else {
                     dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosRegistro.jsp");
@@ -139,7 +139,7 @@ public class MenuEmpleados extends HttpServlet {
                 empleado = controladorEmp.obtenerInfo(Nss);
 
                 if (empleado == null) {
-                    System.out.println("Empleado");
+                    request.setAttribute("pop1", "popOpen");
                     request.setAttribute("Busca", "Busca");
                     ArrayList<String> nombres = null;
                     nombres = controladorEmp.listaEmpleados();
@@ -152,7 +152,7 @@ public class MenuEmpleados extends HttpServlet {
                     usuario = usuarioDAO.obtenerUsuario(empleado.getIdUsuario());
 
                     if (usuario == null) {
-                        System.out.println("usuario");
+                        request.setAttribute("pop1", "popOpen");
                         ArrayList<String> nombres = null;
                         nombres = controladorEmp.listaEmpleados();
                         request.setAttribute("Lista", nombres);
@@ -203,11 +203,17 @@ public class MenuEmpleados extends HttpServlet {
 
                 boolean validar;
                 validar = controladroEmpleado.ActualizaEmpleado(empleado, usuario, usuarioAntiguo);
-
+                
+                request.setAttribute("pop2", "popOpen");
                 if (validar) {
                     dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
                 } else {
-                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                    
+                    request.setAttribute("Busca", "Busca");
+                    ArrayList<String> nombres = null;
+                    nombres = controladroEmpleado.listaEmpleados();
+                    request.setAttribute("Lista", nombres);
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
                 }
             } else if ("Eliminar".equals(accion)) {
                 request.setAttribute("Busca", "Busca");
@@ -231,7 +237,7 @@ public class MenuEmpleados extends HttpServlet {
                 empleado = controladorEmp.obtenerInfo(Nss);
 
                 if (empleado == null) {
-                    System.out.println("Empleado");
+                    request.setAttribute("pop1", "popOpen");
                     request.setAttribute("Busca", "Busca");
                     ArrayList<String> nombres = null;
                     nombres = controladorEmp.listaEmpleados();
@@ -244,7 +250,7 @@ public class MenuEmpleados extends HttpServlet {
                     usuario = usuarioDAO.obtenerUsuario(empleado.getIdUsuario());
 
                     if (usuario == null) {
-                        System.out.println("usuario");
+                        request.setAttribute("pop1", "popOpen");
                         ArrayList<String> nombres = null;
                         nombres = controladorEmp.listaEmpleados();
                         request.setAttribute("Lista", nombres);
@@ -266,11 +272,16 @@ public class MenuEmpleados extends HttpServlet {
 
                 boolean validar;
                 validar = controladroEmpleado.EliminarEmpleado(Nss, Usuario);
-
+                request.setAttribute("pop3", "popOpen");
                 if (validar) {
                     dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
                 } else {
-                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                    
+                    request.setAttribute("Busca", "Busca");
+                    ArrayList<String> nombres = null;
+                    nombres = controladroEmpleado.listaEmpleados();
+                    request.setAttribute("Lista", nombres);
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
                 }
             }
         }

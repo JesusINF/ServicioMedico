@@ -21,9 +21,9 @@
     </head>
     <body>
         <div class="Form inicio-sesion">
-            <h1>Eliminación Empleados</h1>
+            <h1>Eliminación Medicos</h1>
             <div class="<c:out value="${Actualiza}"/>">
-                <form class="login-form" action="MenuEmpleados?accion=BuscaElimina"method="POST" autocomplete="off" accept-charset="utf-8">
+                <form class="login-form" action="MenuMedicos?accion=BuscaElimina"method="POST" autocomplete="off" accept-charset="utf-8">
                     <input list="browsers" name="browsers" class="login-username">
                     <datalist id="browsers">
                         <c:forEach var="Emp" items="${Lista}">
@@ -34,20 +34,19 @@
                 </form>
             </div>
             <div class="<c:out value="${Busca}"/>">
-                <form class="login-form" action="MenuEmpleados?accion=Elimina" method="POST" autocomplete="off" accept-charset="utf-8">
+                <form class="login-form" action="MenuMedicos?accion=Elimina" method="POST" autocomplete="off" accept-charset="utf-8">
                     <input type="text" id="Nombre" name="Nombre" class="Block login-username" required maxlength="50" placeholder="Nombre" value="<c:out value="${Emp.nombre}"/>"/>
                     <input type="text" id="Direccion" name="Direccion" class="Block login-username"  required maxlength="50" placeholder="Dirección" value="<c:out value="${Emp.direccion}"/>" />
                     <input type="text" id="Telefono" name="Telefono" class="Block login-username" maxlength="10" required placeholder="Telefono" value="<c:out value="${Emp.telefono}"/>" />
                     <input type="text" id="Cp" name="Cp" class="Block login-username" required maxlength="5" placeholder="Código Postal" value="<c:out value="${Emp.cp}"/>" />
                     <input type="text" id="Curp" name="Curp" class="Block login-username" required maxlength="18"placeholder="CURP" value="<c:out value="${Emp.curp}"/>" />
                     <input type="text" id="Nss" name="Nss" class="Block login-username" required maxlength="11" placeholder="Numero de Seguro Social" value="<c:out value="${Emp.nss}"/>" />
+                    <input type="text" id="Cedula" name="Cedula" class="Block login-username" required maxlength="8" placeholder="Cedúla" value="<c:out value="${Emp.cedula}"/>"/>
                     <select id="Tipo" name="Tipo" class="Block login-username">
                         <option value="<c:out value="${Emp.tipo}"/>" selected ><c:out value="${Emp.tipo}"/></option>
-                        <option value="Administrador">Administrador</option>
-                        <option value="Programador">Programador</option>
-                        <option value="Enfermera">Enfermera</option>
-                        <option value="Recepcionista">Recepcionista</option>
-                        <option value="Otro">Otro</option>
+                        <option value="Medico Planta">Medico Planta</option>
+                        <option value="Medico sin Planta">Medico sin Planta</option>
+                        <option value="Medico Sustituto">Medico Sustituto</option>
                     </select>
                     <input type="text" id="Usuario" name="Usuario" class="Block login-username"  required maxlength="50" placeholder="Usuario" value="<c:out value="${User.usuario}"/>" />
                     <input type="password" id="Password" name="Password" class="Block login-password" required placeholder="Contraseña" value="<c:out value="${User.password}"/>" />
@@ -58,7 +57,7 @@
         <div id="popup1" class="<c:out value="${pop1}"/> overlay">
             <div class="popup">
                 <h2>Busqueda Erronea</h2>
-                <a class="close" href="MenuEmpleados?accion=Eliminar">&times;</a>
+                <a class="close" href="MenuMedicos?accion=Eliminar">&times;</a>
                 <div class="content">
                     Algo salio mal, intente de nuevo.
                 </div>
