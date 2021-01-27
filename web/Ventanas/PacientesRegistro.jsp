@@ -21,36 +21,34 @@
     </head>
     <body>
         <div class="Form inicio-sesion">
-            <h1>Registro Empleados</h1>
-            <form class="login-form" action="MenuEmpleados?accion=Insert" method="POST" autocomplete="off" accept-charset="utf-8">
+            <h1>Registro Pacientes</h1>
+            <form class="login-form" action="MenuPacientes?accion=Insert" method="POST" autocomplete="off" accept-charset="utf-8">
                 <input type="text" id="Nombre" name="Nombre" class="login-username" autofocus required maxlength="50" placeholder="Nombre" />
                 <input type="text" id="Direccion" name="Direccion" class="login-username"  required maxlength="50" placeholder="Dirección" />
                 <input type="text" id="Telefono" name="Telefono" class="login-username" maxlength="10" required placeholder="Telefono" />
                 <input type="text" id="Cp" name="Cp" class="login-username" required maxlength="5" placeholder="Código Postal" />
                 <input type="text" id="Curp" name="Curp" class="login-username" required maxlength="18"placeholder="CURP" />
                 <input type="text" id="Nss" name="Nss" class="login-username" required maxlength="11" placeholder="Numero de Seguro Social" />
-                <select id="Tipo" name="Tipo" class="login-username">
-                    <option value="Administrador">Administrador</option>
-                    <option value="Programador">Programador</option>
-                    <option value="Enfermera">Enfermera</option>
-                    <option value="Recepcionista">Recepcionista</option>
-                    <option value="Otro">Otro</option>
-                </select>
-                <input type="text" id="Usuario" name="Usuario" class="login-username"  required maxlength="50" placeholder="Usuario" />
-                <input type="password" id="Password" name="Password" class="login-password" required placeholder="Contraseña" />
+                <input type="text" id="Padecimiento" name="Padecimiento" class="login-username" required maxlength="100" placeholder="Padecimientos" />
+                <input list="browsers" name="browsers" class="login-username">
+                <datalist id="browsers">
+                    <c:forEach var="Emp" items="${Lista}">
+                        <option value="<c:out value="${Emp}"/>">
+                        </c:forEach>
+                </datalist>
                 <input type="submit" name="Resgistrar" value="Registrar" class="login-submit" />
             </form>
         </div>
         <div id="popup1" class="<c:out value="${pop}"/> overlay">
             <div class="popup">
                 <h2>Registro Erroneo</h2>
-                <a class="close" href="MenuEmpleados?accion=Registrar">&times;</a>
+                <a class="close" href="MenuPacientes?accion=Registrar">&times;</a>
                 <div class="content">
                     Algo salio mal, intente de nuevo.
                 </div>
             </div>
         </div>
-        <div class="fondo Sis2"></div>
+        <div class="fondo Sis4"></div>
         <nav class="main-menu" id="<c:out value="${Nivel}"/>">
             <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="Scripts/navegacion.js"></script>
         </nav>

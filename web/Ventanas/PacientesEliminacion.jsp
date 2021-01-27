@@ -21,9 +21,9 @@
     </head>
     <body>
         <div class="Form inicio-sesion">
-            <h1>Eliminación Medicos</h1>
+            <h1>Eliminación Pacientes</h1>
             <div class="<c:out value="${Actualiza}"/>">
-                <form class="login-form" action="MenuMedicos?accion=BuscaElimina"method="POST" autocomplete="off" accept-charset="utf-8">
+                <form class="login-form" action="MenuPacientes?accion=BuscaElimina"method="POST" autocomplete="off" accept-charset="utf-8">
                     <input list="browsers" name="browsers" class="login-username">
                     <datalist id="browsers">
                         <c:forEach var="Emp" items="${Lista}">
@@ -34,22 +34,20 @@
                 </form>
             </div>
             <div class="<c:out value="${Busca}"/>">
-                <form class="login-form" action="MenuMedicos?accion=Elimina" method="POST" autocomplete="off" accept-charset="utf-8">
+                <form class="login-form" action="MenuPacientes?accion=Elimina" method="POST" autocomplete="off" accept-charset="utf-8">
                     <input type="text" id="Nombre" name="Nombre" class="Block login-username" required maxlength="50" placeholder="Nombre" value="<c:out value="${Emp.nombre}"/>"/>
-                    <input type="text" id="Direccion" name="Direccion" class="Block login-username"  required maxlength="50" placeholder="Dirección" value="<c:out value="${Emp.direccion}"/>" />
-                    <input type="text" id="Telefono" name="Telefono" class="Block login-username" maxlength="10" required placeholder="Telefono" value="<c:out value="${Emp.telefono}"/>" />
-                    <input type="text" id="Cp" name="Cp" class="Block login-username" required maxlength="5" placeholder="Código Postal" value="<c:out value="${Emp.cp}"/>" />
-                    <input type="text" id="Curp" name="Curp" class="Block login-username" required maxlength="18"placeholder="CURP" value="<c:out value="${Emp.curp}"/>" />
-                    <input type="text" id="Nss" name="Nss" class="Block login-username" required maxlength="11" placeholder="Numero de Seguro Social" value="<c:out value="${Emp.nss}"/>" />
-                    <input type="text" id="Cedula" name="Cedula" class="Block login-username" required maxlength="8" placeholder="Cedúla" value="<c:out value="${Emp.cedula}"/>"/>
-                    <select id="Tipo" name="Tipo" class="Block login-username">
-                        <option value="<c:out value="${Emp.tipo}"/>" selected ><c:out value="${Emp.tipo}"/></option>
-                        <option value="Medico Planta">Medico Planta</option>
-                        <option value="Medico sin Planta">Medico sin Planta</option>
-                        <option value="Medico Sustituto">Medico Sustituto</option>
-                    </select>
-                    <input type="text" id="Usuario" name="Usuario" class="Block login-username"  required maxlength="50" placeholder="Usuario" value="<c:out value="${User.usuario}"/>" />
-                    <input type="password" id="Password" name="Password" class="Block login-password" required placeholder="Contraseña" value="<c:out value="${User.password}"/>" />
+                    <input type="text" id="Direccion" name="Direccion" class="Block login-username"  required maxlength="50" placeholder="Dirección" value="<c:out value="${Emp.direccion}"/>"/>
+                    <input type="text" id="Telefono" name="Telefono" class="Block login-username" maxlength="10" required placeholder="Telefono" value="<c:out value="${Emp.telefono}"/>"/>
+                    <input type="text" id="Cp" name="Cp" class="Block login-username" required maxlength="5" placeholder="Código Postal" value="<c:out value="${Emp.cp}"/>"/>
+                    <input type="text" id="Curp" name="Curp" class="Block login-username" required maxlength="18"placeholder="CURP" value="<c:out value="${Emp.curp}"/>"/>
+                    <input type="text" id="Nss" name="Nss" class="Block login-username" required maxlength="11" placeholder="Numero de Seguro Social" value="<c:out value="${Emp.nss}"/>"/>
+                    <input type="text" id="Padecimiento" name="Padecimiento" class="Block login-username" required maxlength="100" placeholder="Padecimiento" value="<c:out value="${Emp.padecimiento}"/>"/>
+                    <input list="browsers" name="browsers" class="Block login-username" value="<c:out value="${DatoMedico}"/>">
+                    <datalist id="browsers" >
+                        <c:forEach var="Emp" items="${Lista}">
+                            <option value="<c:out value="${Emp}"/>">
+                            </c:forEach>
+                    </datalist>
                     <input type="submit" id="Eliminar" name="Eliminar" value="Eliminar" class="login-submit" />
                 </form>
             </div>
@@ -57,7 +55,7 @@
         <div id="popup1" class="<c:out value="${pop1}"/> overlay">
             <div class="popup">
                 <h2>Busqueda Erronea</h2>
-                <a class="close" href="MenuMedicos?accion=Eliminar">&times;</a>
+                <a class="close" href="MenuPacientes?accion=Eliminar">&times;</a>
                 <div class="content">
                     Algo salio mal, intente de nuevo.
                 </div>
@@ -67,13 +65,13 @@
         <div id="popup1" class="<c:out value="${pop3}"/> overlay">
             <div class="popup">
                 <h2>Eliminación Erronea</h2>
-                <a class="close" href="MenuEmpleados?accion=Eliminar">&times;</a>
+                <a class="close" href="MenuPacientes?accion=Eliminar">&times;</a>
                 <div class="content">
                     Algo salio mal, intente de nuevo.
                 </div>
             </div>
         </div>
-        <div class="fondo Sis3"></div>
+        <div class="fondo Sis4"></div>
         <nav class="main-menu" id="<c:out value="${Nivel}"/>">
             <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="Scripts/navegacion.js"></script>
         </nav>

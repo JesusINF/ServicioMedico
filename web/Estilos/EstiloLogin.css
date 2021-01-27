@@ -41,6 +41,26 @@ body {
     background-color: rgba(0,0,0,0.5);
 }
 
+.Sis{
+    background-image: url("../Imagenes/fondo2.jpg");
+    background-size: cover;
+}
+
+.Sis2{
+    background-image: url("../Imagenes/fondo3.jpg");
+    background-size: cover;
+}
+
+.Sis3{
+    background-image: url("../Imagenes/fondo4.jpg");
+    background-size: cover;
+}
+
+.Sis4{
+    background-image: url("../Imagenes/fondo5.jpg");
+    background-size: cover;
+}
+
 .inicio-sesion{
     font-family: 'Amaranth', sans-serif;
     z-index: 1;

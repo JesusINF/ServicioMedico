@@ -132,6 +132,58 @@ public class MedicoDAO {
             return null;
         }
     }
+    
+    public Medico obtenerInfo(int id) {
+        MedicoDAO();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conexion.prepareStatement("SELECT `medicos`.`idmedicos`,\n"
+                    + "    `medicos`.`nombre`,\n"
+                    + "    `medicos`.`direccion`,\n"
+                    + "    `medicos`.`telefono`,\n"
+                    + "    `medicos`.`cp`,\n"
+                    + "    `medicos`.`curp`,\n"
+                    + "    `medicos`.`nss`,\n"
+                    + "    `medicos`.`cedula`,\n"
+                    + "    `medicos`.`tipo`,\n"
+                    + "    `medicos`.`alta`,\n"
+                    + "    `medicos`.`baja`,\n"
+                    + "    `medicos`.`usuario_idusuario`\n"
+                    + "FROM `bawuh1cvaadk7k8ml9wu`.`medicos`\n"
+                    + "WHERE `medicos`.`idmedicos` = ?;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            Medico medico = null;
+
+            while (rs.next()) {
+                String direccion = rs.getString("direccion");
+                String telefono = rs.getString("telefono");
+                String cp = rs.getString("cp");
+                String curp = rs.getString("curp");
+                String cedula = rs.getString("cedula");
+                String nombre = rs.getString("nombre");
+                String nss = rs.getString("nss");
+                String tipo = rs.getString("tipo");
+                int idUsuario = rs.getInt("usuario_idusuario");
+
+                medico = new Medico(id, nombre, direccion, telefono, cp, curp, nss, cedula, tipo, null, null, idUsuario);
+            }
+
+            rs.close();
+            conexion.close();
+            con.cerrarConexion();
+            return medico;
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            con.cerrarConexion();
+            return null;
+        }
+    }
 
     public ArrayList<String> listaMedicos() {
         MedicoDAO();
