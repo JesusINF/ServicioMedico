@@ -66,6 +66,11 @@ body {
     background-size: cover;
 }
 
+.Sis6{
+    background-image: url("../Imagenes/fondo7.jpg");
+    background-size: cover;
+}
+
 .inicio-sesion{
     font-family: 'Amaranth', sans-serif;
     z-index: 1;

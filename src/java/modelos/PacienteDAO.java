@@ -143,11 +143,7 @@ public class PacienteDAO {
             conexion.close();
             con.cerrarConexion();
 
-            if (i == 0) {
-                return false;
-            } else {
-                return true;
-            }
+            return i != 0;
 
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -189,11 +185,7 @@ public class PacienteDAO {
             ps.close();
             conexion.close();
             con.cerrarConexion();
-            if (i == 0) {
-                return false;
-            } else {
-                return true;
-            }
+            return i != 0;
 
         } catch (SQLException e) {
             System.out.println(e.toString());

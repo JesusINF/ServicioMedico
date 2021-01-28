@@ -80,8 +80,8 @@ public class MenuMedicos extends HttpServlet {
             if (accion == null || accion.isEmpty()) {
                 if (user.getTipo().equalsIgnoreCase("Administrador") || user.getTipo().equalsIgnoreCase("Programador")) {
                     dispatcher = request.getRequestDispatcher("Ventanas/Medicos.jsp");
-                } else if (user.getTipo().equalsIgnoreCase("Medico")) {
-                    dispatcher = request.getRequestDispatcher("error.jsp");
+                } else if (user.getTipo().equalsIgnoreCase("Recepcionista")) {
+                    dispatcher = request.getRequestDispatcher("Ventanas/Medicos.jsp");
                 } else {
                     dispatcher = request.getRequestDispatcher("error.jsp");
                 }

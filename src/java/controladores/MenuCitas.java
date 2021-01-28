@@ -83,10 +83,10 @@ public class MenuCitas extends HttpServlet {
             if (accion == null || accion.isEmpty()) {
                 if (user.getTipo().equalsIgnoreCase("Administrador") || user.getTipo().equalsIgnoreCase("Programador")) {
                     dispatcher = request.getRequestDispatcher("Ventanas/Citas.jsp");
-                } else if (user.getTipo().equalsIgnoreCase("Medico")) {
-                    dispatcher = request.getRequestDispatcher("error.jsp");
+                } else if (user.getTipo().equalsIgnoreCase("Medico") || user.getTipo().equalsIgnoreCase("Recepcionista")) {
+                    dispatcher = request.getRequestDispatcher("Ventanas/Citas.jsp");
                 } else {
-                    dispatcher = request.getRequestDispatcher("error.jsp");
+                    dispatcher = request.getRequestDispatcher("Ventanas/Citas.jsp");
                 }
 
             } else if ("Logout".equals(accion)) {

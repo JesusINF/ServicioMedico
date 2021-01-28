@@ -81,8 +81,8 @@ public class MenuPacientes extends HttpServlet {
             if (accion == null || accion.isEmpty()) {
                 if (user.getTipo().equalsIgnoreCase("Administrador") || user.getTipo().equalsIgnoreCase("Programador")) {
                     dispatcher = request.getRequestDispatcher("Ventanas/Pacientes.jsp");
-                } else if (user.getTipo().equalsIgnoreCase("Medico")) {
-                    dispatcher = request.getRequestDispatcher("error.jsp");
+                } else if (user.getTipo().equalsIgnoreCase("Medico") || user.getTipo().equalsIgnoreCase("Recepcionista")) {
+                    dispatcher = request.getRequestDispatcher("Ventanas/Pacientes.jsp");
                 } else {
                     dispatcher = request.getRequestDispatcher("error.jsp");
                 }
