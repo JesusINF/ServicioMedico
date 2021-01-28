@@ -24,7 +24,7 @@
             <h1>Eliminación Medicos</h1>
             <div class="<c:out value="${Actualiza}"/>">
                 <form class="login-form" action="MenuMedicos?accion=BuscaElimina"method="POST" autocomplete="off" accept-charset="utf-8">
-                    <input list="browsers" name="browsers" class="login-username">
+                    <input list="browsers" name="browsers" class="login-username" placeholder="Busca Medico" required autofocus>
                     <datalist id="browsers">
                         <c:forEach var="Emp" items="${Lista}">
                             <option value="<c:out value="${Emp}"/>">

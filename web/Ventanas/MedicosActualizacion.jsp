@@ -24,7 +24,7 @@
             <h1>Actualización Medicos</h1>
             <div class="<c:out value="${Actualiza}"/>">
                 <form class="login-form" action="MenuMedicos?accion=Busca"method="POST" autocomplete="off" accept-charset="utf-8">
-                    <input list="browsers" name="browsers" class="login-username">
+                    <input list="browsers" name="browsers" class="login-username" placeholder="Busca Medico" required autofocus>
                     <datalist id="browsers">
                         <c:forEach var="Emp" items="${Lista}">
                             <option value="<c:out value="${Emp}"/>">
@@ -42,7 +42,7 @@
                     <input type="text" id="Curp" name="Curp" class="login-username" required maxlength="18"placeholder="CURP" value="<c:out value="${Emp.curp}"/>"/>
                     <input type="text" id="Nss" name="Nss" class="login-username" required maxlength="11" placeholder="Numero de Seguro Social" value="<c:out value="${Emp.nss}"/>"/>
                     <input type="text" id="Cedula" name="Cedula" class="login-username" required maxlength="8" placeholder="Cedúla" value="<c:out value="${Emp.cedula}"/>"/>
-                    <select id="Tipo" name="Tipo" class="login-username" >
+                    <select id="Tipo" name="Tipo" class="login-username" required>
                         <option value="<c:out value="${Emp.tipo}"/>" selected><c:out value="${Emp.tipo}"/></option>
                         <option value="Medico Planta">Medico Planta</option>
                         <option value="Medico sin Planta">Medico sin Planta</option>

@@ -61,6 +61,11 @@ body {
     background-size: cover;
 }
 
+.Sis5{
+    background-image: url("../Imagenes/fondo6.jpg");
+    background-size: cover;
+}
+
 .inicio-sesion{
     font-family: 'Amaranth', sans-serif;
     z-index: 1;
@@ -103,6 +108,12 @@ img{
     font-family: 'Yusei Magic', sans-serif;
     font-size: 20px;
     color: #7B241C;
+}
+
+.inicio-sesion label{
+    font-family: 'Yusei Magic', sans-serif;
+    font-size: 20px;
+    color: #FFFFFF;
 }
 
 .null{
@@ -157,12 +168,12 @@ input:focus:-ms-input-placeholder {
     border-bottom: 1px solid rgba(255, 255, 255, 0.9);
     color: white;
     display: block;
-    margin-left: 24%;
+    margin-left: 15%;
     margin-top: 1rem; 
     padding: .5rem;
     -webkit-transition: 250ms background ease-in;
     transition: 250ms background ease-in;
-    width: 50%;
+    width: 70%;
     font-size: 20px;
 }
 .login-username:focus, .login-password:focus {

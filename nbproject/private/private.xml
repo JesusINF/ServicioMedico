@@ -3,13 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/src/java/modelos/UsuarioDAO.java</file>
-            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/web/Estilos/EstiloLogin.css</file>
-            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/src/java/modelos/EmpleadoDAO.java</file>
-            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/web/Ventanas/EmpleadosEliminacion.jsp</file>
-            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/web/Ventanas/EmpleadosActualizacion.jsp</file>
-            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/web/Ventanas/Empleados.jsp</file>
+            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/src/java/controladores/MenuMedicos.java</file>
+            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/src/java/controladores/MenuCitas.java</file>
+            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/web/Scripts/navegacion.js</file>
             <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/src/java/controladores/MenuEmpleados.java</file>
+            <file>file:/C:/Users/jesus/Documents/NetBeansProjects/ServicioMedico/src/java/controladores/MenuPacientes.java</file>
         </group>
     </open-files>
 </project-private>

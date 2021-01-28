@@ -45,7 +45,7 @@ public class MenuMedicos extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MenuMedicos</title>");            
+            out.println("<title>Servlet MenuMedicos</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet MenuMedicos at " + request.getContextPath() + "</h1>");
@@ -129,49 +129,57 @@ public class MenuMedicos extends HttpServlet {
             } else if ("Busca".equals(accion)) {
                 MedicoDAO controladorMed = new MedicoDAO();
 
-                String Nss = request.getParameter("browsers");
+                try {
+                    String Nss = request.getParameter("browsers");
 
-                String[] partes = Nss.split(" - ");
+                    String[] partes = Nss.split(" - ");
 
-                Nss = partes[partes.length - 1];
+                    Nss = partes[partes.length - 1];
 
-                Medico medico = null;
+                    Medico medico = null;
 
-                medico = controladorMed.obtenerInfo(Nss);
+                    medico = controladorMed.obtenerInfo(Nss);
 
-                if (medico == null) {
-                    request.setAttribute("pop1", "popOpen");
-                    request.setAttribute("Busca", "Busca");
-                    ArrayList<String> nombres = null;
-                    nombres = controladorMed.listaMedicos();
-                    request.setAttribute("Lista", nombres);
-                    dispatcher = request.getRequestDispatcher("Ventanas/MedicosActualizacion.jsp");
-                } else {
-                    UsuarioDAO usuarioDAO = new UsuarioDAO();
-
-                    Usuario usuario = null;
-                    usuario = usuarioDAO.obtenerUsuario(medico.getIdUsuario());
-
-                    if (usuario == null) {
+                    if (medico == null) {
                         request.setAttribute("pop1", "popOpen");
+                        request.setAttribute("Busca", "Busca");
                         ArrayList<String> nombres = null;
                         nombres = controladorMed.listaMedicos();
                         request.setAttribute("Lista", nombres);
-                        request.setAttribute("Busca", "Busca");
                         dispatcher = request.getRequestDispatcher("Ventanas/MedicosActualizacion.jsp");
                     } else {
-                        request.setAttribute("Emp", medico);
-                        request.setAttribute("User", usuario);
+                        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-                        Cookie galletaUsuario = new Cookie("User", Integer.toString(usuario.getId()));
-                        galletaUsuario.setMaxAge(1000);
-                        response.addCookie(galletaUsuario);
+                        Usuario usuario = null;
+                        usuario = usuarioDAO.obtenerUsuario(medico.getIdUsuario());
 
-                        request.setAttribute("Actualiza", "Actualiza");
-                        dispatcher = request.getRequestDispatcher("Ventanas/MedicosActualizacion.jsp");
+                        if (usuario == null) {
+                            request.setAttribute("pop1", "popOpen");
+                            ArrayList<String> nombres = null;
+                            nombres = controladorMed.listaMedicos();
+                            request.setAttribute("Lista", nombres);
+                            request.setAttribute("Busca", "Busca");
+                            dispatcher = request.getRequestDispatcher("Ventanas/MedicosActualizacion.jsp");
+                        } else {
+                            request.setAttribute("Emp", medico);
+                            request.setAttribute("User", usuario);
+
+                            Cookie galletaUsuario = new Cookie("User", Integer.toString(usuario.getId()));
+                            galletaUsuario.setMaxAge(1000);
+                            response.addCookie(galletaUsuario);
+
+                            request.setAttribute("Actualiza", "Actualiza");
+                            dispatcher = request.getRequestDispatcher("Ventanas/MedicosActualizacion.jsp");
+                        }
                     }
+                } catch (NullPointerException ex) {
+                    request.setAttribute("pop1", "popOpen");
+                    ArrayList<String> nombres = null;
+                    nombres = controladorMed.listaMedicos();
+                    request.setAttribute("Lista", nombres);
+                    request.setAttribute("Busca", "Busca");
+                    dispatcher = request.getRequestDispatcher("Ventanas/MedicosActualizacion.jsp");
                 }
-
             } else if ("Actualiza".equals(accion)) {
                 String Nombre = request.getParameter("Nombre");
                 String Direccion = request.getParameter("Direccion");
@@ -200,17 +208,25 @@ public class MenuMedicos extends HttpServlet {
 
                 UsuarioDAO controladorUsuario = new UsuarioDAO();
                 MedicoDAO ControladorMedico = new MedicoDAO();
+                try {
+                    usuarioAntiguo = controladorUsuario.obtenerUsuario(id);
 
-                usuarioAntiguo = controladorUsuario.obtenerUsuario(id);
+                    boolean validar;
+                    validar = ControladorMedico.ActualizaMedico(medico, usuario, usuarioAntiguo);
 
-                boolean validar;
-                validar = ControladorMedico.ActualizaMedico(medico, usuario, usuarioAntiguo);
-                
-                request.setAttribute("pop2", "popOpen");
-                if (validar) {
-                    dispatcher = request.getRequestDispatcher("Ventanas/Medicos.jsp");
-                } else {
-                    
+                    request.setAttribute("pop2", "popOpen");
+                    if (validar) {
+                        dispatcher = request.getRequestDispatcher("Ventanas/Medicos.jsp");
+                    } else {
+
+                        request.setAttribute("Busca", "Busca");
+                        ArrayList<String> nombres = null;
+                        nombres = ControladorMedico.listaMedicos();
+                        request.setAttribute("Lista", nombres);
+                        dispatcher = request.getRequestDispatcher("Ventanas/MedicosActualizacion.jsp");
+                    }
+                } catch (NullPointerException ex) {
+                    request.setAttribute("pop2", "popOpen");
                     request.setAttribute("Busca", "Busca");
                     ArrayList<String> nombres = null;
                     nombres = ControladorMedico.listaMedicos();
@@ -228,57 +244,75 @@ public class MenuMedicos extends HttpServlet {
             } else if ("BuscaElimina".equalsIgnoreCase(accion)) {
                 MedicoDAO controladorMed = new MedicoDAO();
 
-                String Nss = request.getParameter("browsers");
+                try {
 
-                String[] partes = Nss.split(" - ");
+                    String Nss = request.getParameter("browsers");
 
-                Nss = partes[partes.length - 1];
+                    String[] partes = Nss.split(" - ");
 
-                Medico medico = null;
+                    Nss = partes[partes.length - 1];
 
-                medico = controladorMed.obtenerInfo(Nss);
+                    Medico medico = null;
 
-                if (medico == null) {
-                    request.setAttribute("pop1", "popOpen");
-                    request.setAttribute("Busca", "Busca");
-                    ArrayList<String> nombres = null;
-                    nombres = controladorMed.listaMedicos();
-                    request.setAttribute("Lista", nombres);
-                    dispatcher = request.getRequestDispatcher("Ventanas/MedicosEliminacion.jsp");
-                } else {
-                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+                    medico = controladorMed.obtenerInfo(Nss);
 
-                    Usuario usuario = null;
-                    usuario = usuarioDAO.obtenerUsuario(medico.getIdUsuario());
-
-                    if (usuario == null) {
+                    if (medico == null) {
                         request.setAttribute("pop1", "popOpen");
+                        request.setAttribute("Busca", "Busca");
                         ArrayList<String> nombres = null;
                         nombres = controladorMed.listaMedicos();
                         request.setAttribute("Lista", nombres);
-                        request.setAttribute("Busca", "Busca");
                         dispatcher = request.getRequestDispatcher("Ventanas/MedicosEliminacion.jsp");
                     } else {
-                        request.setAttribute("Emp", medico);
-                        request.setAttribute("User", usuario);
+                        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-                        request.setAttribute("Actualiza", "Actualiza");
-                        dispatcher = request.getRequestDispatcher("Ventanas/MedicosEliminacion.jsp");
+                        Usuario usuario = null;
+                        usuario = usuarioDAO.obtenerUsuario(medico.getIdUsuario());
+
+                        if (usuario == null) {
+                            request.setAttribute("pop1", "popOpen");
+                            ArrayList<String> nombres = null;
+                            nombres = controladorMed.listaMedicos();
+                            request.setAttribute("Lista", nombres);
+                            request.setAttribute("Busca", "Busca");
+                            dispatcher = request.getRequestDispatcher("Ventanas/MedicosEliminacion.jsp");
+                        } else {
+                            request.setAttribute("Emp", medico);
+                            request.setAttribute("User", usuario);
+
+                            request.setAttribute("Actualiza", "Actualiza");
+                            dispatcher = request.getRequestDispatcher("Ventanas/MedicosEliminacion.jsp");
+                        }
                     }
+                } catch (NullPointerException ex) {
+                    request.setAttribute("pop1", "popOpen");
+                    ArrayList<String> nombres = null;
+                    nombres = controladorMed.listaMedicos();
+                    request.setAttribute("Lista", nombres);
+                    request.setAttribute("Busca", "Busca");
+                    dispatcher = request.getRequestDispatcher("Ventanas/MedicosEliminacion.jsp");
                 }
             } else if ("Elimina".equals(accion)) {
                 MedicoDAO controladorMed = new MedicoDAO();
-                
-                String Nss = request.getParameter("Nss");
-                String Usuario = request.getParameter("Usuario");
+                try {
+                    String Nss = request.getParameter("Nss");
+                    String Usuario = request.getParameter("Usuario");
 
-                boolean validar;
-                validar = controladorMed.EliminarMedico(Nss, Usuario);
-                request.setAttribute("pop3", "popOpen");
-                if (validar) {
-                    dispatcher = request.getRequestDispatcher("Ventanas/Medicos.jsp");
-                } else {
-                    
+                    boolean validar;
+                    validar = controladorMed.EliminarMedico(Nss, Usuario);
+                    request.setAttribute("pop3", "popOpen");
+                    if (validar) {
+                        dispatcher = request.getRequestDispatcher("Ventanas/Medicos.jsp");
+                    } else {
+
+                        request.setAttribute("Busca", "Busca");
+                        ArrayList<String> nombres = null;
+                        nombres = controladorMed.listaMedicos();
+                        request.setAttribute("Lista", nombres);
+                        dispatcher = request.getRequestDispatcher("Ventanas/MedicosEliminacion.jsp");
+                    }
+                } catch (NullPointerException ex) {
+                    request.setAttribute("pop3", "popOpen");
                     request.setAttribute("Busca", "Busca");
                     ArrayList<String> nombres = null;
                     nombres = controladorMed.listaMedicos();

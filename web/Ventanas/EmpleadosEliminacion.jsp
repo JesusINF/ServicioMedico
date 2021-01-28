@@ -24,7 +24,7 @@
             <h1>Eliminación Empleados</h1>
             <div class="<c:out value="${Actualiza}"/>">
                 <form class="login-form" action="MenuEmpleados?accion=BuscaElimina"method="POST" autocomplete="off" accept-charset="utf-8">
-                    <input list="browsers" name="browsers" class="login-username">
+                    <input list="browsers" name="browsers" class="login-username" placeholder="Busca Empleado" required autofocus>
                     <datalist id="browsers">
                         <c:forEach var="Emp" items="${Lista}">
                             <option value="<c:out value="${Emp}"/>">

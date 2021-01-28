@@ -20,7 +20,6 @@ import modelos.Medico;
 import modelos.MedicoDAO;
 import modelos.Paciente;
 import modelos.PacienteDAO;
-import modelos.UsuarioDAO;
 import modelos.Usuario;
 
 /**
@@ -146,89 +145,106 @@ public class MenuPacientes extends HttpServlet {
                 dispatcher = request.getRequestDispatcher("Ventanas/PacientesActualizacion.jsp");
             } else if ("Busca".equals(accion)) {
                 PacienteDAO controladorPac = new PacienteDAO();
+                try {
+                    String Nss = request.getParameter("browsers");
 
-                String Nss = request.getParameter("browsers");
+                    String[] partes = Nss.split(" - ");
 
-                String[] partes = Nss.split(" - ");
+                    Nss = partes[partes.length - 1];
 
-                Nss = partes[partes.length - 1];
+                    Paciente paciente = null;
 
-                Paciente paciente = null;
+                    paciente = controladorPac.obtenerInfo(Nss);
 
-                paciente = controladorPac.obtenerInfo(Nss);
+                    if (paciente == null) {
+                        request.setAttribute("pop1", "popOpen");
+                        request.setAttribute("Busca", "Busca");
+                        ArrayList<String> nombres = null;
+                        nombres = controladorPac.listaPacientes();
+                        request.setAttribute("Lista", nombres);
+                        dispatcher = request.getRequestDispatcher("Ventanas/PacientesActualizacion.jsp");
+                    } else {
 
-                if (paciente == null) {
+                        request.setAttribute("Emp", paciente);
+
+                        Cookie galletaPaciente = new Cookie("Paciente", paciente.getNss());
+                        galletaPaciente.setMaxAge(1000);
+                        response.addCookie(galletaPaciente);
+
+                        MedicoDAO controladorMed = new MedicoDAO();
+
+                        Medico medico = null;
+                        medico = controladorMed.obtenerInfo(paciente.getIdMedico());
+
+                        request.setAttribute("DatoMedico", medico.getNombre() + " - " + medico.getNss());
+
+                        ArrayList<String> nombres = null;
+                        nombres = controladorMed.listaMedicos();
+                        request.setAttribute("Lista", nombres);
+                        request.setAttribute("Actualiza", "Actualiza");
+                        dispatcher = request.getRequestDispatcher("Ventanas/PacientesActualizacion.jsp");
+
+                    }
+                } catch (NullPointerException ex) {
                     request.setAttribute("pop1", "popOpen");
                     request.setAttribute("Busca", "Busca");
                     ArrayList<String> nombres = null;
                     nombres = controladorPac.listaPacientes();
                     request.setAttribute("Lista", nombres);
                     dispatcher = request.getRequestDispatcher("Ventanas/PacientesActualizacion.jsp");
-                } else {
-
-                    request.setAttribute("Emp", paciente);
-
-                    Cookie galletaPaciente = new Cookie("Paciente", paciente.getNss());
-                    galletaPaciente.setMaxAge(1000);
-                    response.addCookie(galletaPaciente);
-
-                    MedicoDAO controladorMed = new MedicoDAO();
-
-                    Medico medico = null;
-                    medico = controladorMed.obtenerInfo(paciente.getIdMedico());
-
-                    request.setAttribute("DatoMedico", medico.getNombre() + " - " + medico.getNss());
-
-                    ArrayList<String> nombres = null;
-                    nombres = controladorMed.listaMedicos();
-                    request.setAttribute("Lista", nombres);
-                    request.setAttribute("Actualiza", "Actualiza");
-                    dispatcher = request.getRequestDispatcher("Ventanas/PacientesActualizacion.jsp");
-
                 }
 
             } else if ("Actualiza".equals(accion)) {
                 MedicoDAO controladorMed = new MedicoDAO();
                 PacienteDAO controladorPac = new PacienteDAO();
 
-                String Nombre = request.getParameter("Nombre");
-                String Direccion = request.getParameter("Direccion");
-                String Telefono = request.getParameter("Telefono");
-                String Cp = request.getParameter("Cp");
-                String Curp = request.getParameter("Curp");
-                String Nss = request.getParameter("Nss");
-                String Padecimientos = request.getParameter("Padecimiento");
-                String NssMed = request.getParameter("browsers");
+                try {
+                    String Nombre = request.getParameter("Nombre");
+                    String Direccion = request.getParameter("Direccion");
+                    String Telefono = request.getParameter("Telefono");
+                    String Cp = request.getParameter("Cp");
+                    String Curp = request.getParameter("Curp");
+                    String Nss = request.getParameter("Nss");
+                    String Padecimientos = request.getParameter("Padecimiento");
+                    String NssMed = request.getParameter("browsers");
 
-                String[] partes = NssMed.split(" - ");
+                    String[] partes = NssMed.split(" - ");
 
-                NssMed = partes[partes.length - 1];
+                    NssMed = partes[partes.length - 1];
 
-                Medico medico = null;
+                    Medico medico = null;
 
-                medico = controladorMed.obtenerInfo(NssMed);
+                    medico = controladorMed.obtenerInfo(NssMed);
 
-                Paciente paciente = null;
+                    Paciente paciente = null;
 
-                paciente = new Paciente(0, Nombre, Direccion, Telefono, Cp, Curp, Nss, Padecimientos, medico.getId());
+                    paciente = new Paciente(0, Nombre, Direccion, Telefono, Cp, Curp, Nss, Padecimientos, medico.getId());
 
-                Cookie[] galletaId = request.getCookies();
-                String NssAntiguo = null;
-                for (Cookie cookie : galletaId) {
-                    if (cookie.getName().equalsIgnoreCase("Paciente")) {
-                        NssAntiguo = cookie.getValue();
-                        cookie.setMaxAge(0);
+                    Cookie[] galletaId = request.getCookies();
+                    String NssAntiguo = null;
+                    for (Cookie cookie : galletaId) {
+                        if (cookie.getName().equalsIgnoreCase("Paciente")) {
+                            NssAntiguo = cookie.getValue();
+                            cookie.setMaxAge(0);
+                        }
                     }
-                }
 
-                boolean validar;
-                validar = controladorPac.ActualizarPaciente(paciente, NssAntiguo);
+                    boolean validar;
+                    validar = controladorPac.ActualizarPaciente(paciente, NssAntiguo);
 
-                request.setAttribute("pop2", "popOpen");
-                if (validar) {
-                    dispatcher = request.getRequestDispatcher("Ventanas/Pacientes.jsp");
-                } else {
+                    request.setAttribute("pop2", "popOpen");
+                    if (validar) {
+                        dispatcher = request.getRequestDispatcher("Ventanas/Pacientes.jsp");
+                    } else {
 
+                        request.setAttribute("Busca", "Busca");
+                        ArrayList<String> nombres = null;
+                        nombres = controladorPac.listaPacientes();
+                        request.setAttribute("Lista", nombres);
+                        dispatcher = request.getRequestDispatcher("Ventanas/PacientesActualizacion.jsp");
+                    }
+                } catch (NullPointerException ex) {
+                    request.setAttribute("pop2", "popOpen");
                     request.setAttribute("Busca", "Busca");
                     ArrayList<String> nombres = null;
                     nombres = controladorPac.listaPacientes();
@@ -247,20 +263,37 @@ public class MenuPacientes extends HttpServlet {
                 MedicoDAO controladorMed = new MedicoDAO();
                 PacienteDAO controladorPac = new PacienteDAO();
 
-                String Nss = request.getParameter("browsers");
+                try {
+                    String Nss = request.getParameter("browsers");
 
-                String[] partes = Nss.split(" - ");
+                    String[] partes = Nss.split(" - ");
 
-                Nss = partes[partes.length - 1];
+                    Nss = partes[partes.length - 1];
 
-                Paciente paciente = null;
-                paciente = controladorPac.obtenerInfo(Nss);
+                    Paciente paciente = null;
+                    paciente = controladorPac.obtenerInfo(Nss);
 
-                Medico medico = null;
+                    Medico medico = null;
 
-                medico = controladorMed.obtenerInfo(paciente.getIdMedico());
+                    medico = controladorMed.obtenerInfo(paciente.getIdMedico());
 
-                if (paciente == null) {
+                    if (paciente == null) {
+                        request.setAttribute("pop1", "popOpen");
+                        request.setAttribute("Busca", "Busca");
+
+                        ArrayList<String> nombres = null;
+                        nombres = controladorPac.listaPacientes();
+                        request.setAttribute("Lista", nombres);
+                        dispatcher = request.getRequestDispatcher("Ventanas/PacientesEliminacion.jsp");
+                    } else {
+
+                        request.setAttribute("Emp", paciente);
+                        request.setAttribute("DatoMedico", medico.getNombre() + " - " + medico.getNss());
+
+                        request.setAttribute("Actualiza", "Actualiza");
+                        dispatcher = request.getRequestDispatcher("Ventanas/PacientesEliminacion.jsp");
+                    }
+                } catch (NullPointerException ex) {
                     request.setAttribute("pop1", "popOpen");
                     request.setAttribute("Busca", "Busca");
 
@@ -268,26 +301,28 @@ public class MenuPacientes extends HttpServlet {
                     nombres = controladorPac.listaPacientes();
                     request.setAttribute("Lista", nombres);
                     dispatcher = request.getRequestDispatcher("Ventanas/PacientesEliminacion.jsp");
-                } else {
-
-                    request.setAttribute("Emp", paciente);
-                    request.setAttribute("DatoMedico", medico.getNombre() + " - " + medico.getNss());
-
-                    request.setAttribute("Actualiza", "Actualiza");
-                    dispatcher = request.getRequestDispatcher("Ventanas/PacientesEliminacion.jsp");
                 }
             } else if ("Elimina".equals(accion)) {
                 PacienteDAO controladorPac = new PacienteDAO();
+                try {
+                    String Nss = request.getParameter("Nss");
 
-                String Nss = request.getParameter("Nss");
+                    boolean validar;
+                    validar = controladorPac.EliminarPaciente(Nss);
 
-                boolean validar;
-                validar = controladorPac.EliminarPaciente(Nss);
-                
-                request.setAttribute("pop3", "popOpen");
-                if (validar) {
-                    dispatcher = request.getRequestDispatcher("Ventanas/Pacientes.jsp");
-                } else {
+                    request.setAttribute("pop3", "popOpen");
+                    if (validar) {
+                        dispatcher = request.getRequestDispatcher("Ventanas/Pacientes.jsp");
+                    } else {
+                        request.setAttribute("Busca", "Busca");
+
+                        ArrayList<String> nombres = null;
+                        nombres = controladorPac.listaPacientes();
+                        request.setAttribute("Lista", nombres);
+                        dispatcher = request.getRequestDispatcher("Ventanas/PacientesEliminacion.jsp");
+                    }
+                } catch (NullPointerException ex) {
+                    request.setAttribute("pop3", "popOpen");
                     request.setAttribute("Busca", "Busca");
 
                     ArrayList<String> nombres = null;

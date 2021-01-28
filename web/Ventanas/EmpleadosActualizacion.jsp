@@ -24,7 +24,7 @@
             <h1>Actualización Empleados</h1>
             <div class="<c:out value="${Actualiza}"/>">
                 <form class="login-form" action="MenuEmpleados?accion=Busca"method="POST" autocomplete="off" accept-charset="utf-8">
-                    <input list="browsers" name="browsers" class="login-username">
+                    <input list="browsers" name="browsers" class="login-username" placeholder="Busca Empleado" required autofocus>
                     <datalist id="browsers">
                         <c:forEach var="Emp" items="${Lista}">
                             <option value="<c:out value="${Emp}"/>">
@@ -41,7 +41,7 @@
                     <input type="text" id="Cp" name="Cp" class="login-username" required maxlength="5" placeholder="Código Postal" value="<c:out value="${Emp.cp}"/>"/>
                     <input type="text" id="Curp" name="Curp" class="login-username" required maxlength="18"placeholder="CURP" value="<c:out value="${Emp.curp}"/>"/>
                     <input type="text" id="Nss" name="Nss" class="login-username" required maxlength="11" placeholder="Numero de Seguro Social" value="<c:out value="${Emp.nss}"/>"/>
-                    <select id="Tipo" name="Tipo" class="login-username" >
+                    <select id="Tipo" name="Tipo" class="login-username" required>
                         <option value="<c:out value="${Emp.tipo}"/>" selected><c:out value="${Emp.tipo}"/></option>
                         <option value="Administrador">Administrador</option>
                         <option value="Programador">Programador</option>

@@ -126,89 +126,109 @@ public class MenuEmpleados extends HttpServlet {
                 request.setAttribute("Lista", nombres);
                 dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
             } else if ("Busca".equals(accion)) {
-                EmpleadoDAO controladorEmp = new EmpleadoDAO();
+                try {
+                    EmpleadoDAO controladorEmp = new EmpleadoDAO();
 
-                String Nss = request.getParameter("browsers");
+                    String Nss = request.getParameter("browsers");
 
-                String[] partes = Nss.split(" - ");
+                    String[] partes = Nss.split(" - ");
 
-                Nss = partes[partes.length - 1];
+                    Nss = partes[partes.length - 1];
 
-                Empleado empleado = null;
+                    Empleado empleado = null;
 
-                empleado = controladorEmp.obtenerInfo(Nss);
+                    empleado = controladorEmp.obtenerInfo(Nss);
 
-                if (empleado == null) {
-                    request.setAttribute("pop1", "popOpen");
-                    request.setAttribute("Busca", "Busca");
-                    ArrayList<String> nombres = null;
-                    nombres = controladorEmp.listaEmpleados();
-                    request.setAttribute("Lista", nombres);
-                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
-                } else {
-                    UsuarioDAO usuarioDAO = new UsuarioDAO();
-
-                    Usuario usuario = null;
-                    usuario = usuarioDAO.obtenerUsuario(empleado.getIdUsuario());
-
-                    if (usuario == null) {
+                    if (empleado == null) {
                         request.setAttribute("pop1", "popOpen");
+                        request.setAttribute("Busca", "Busca");
                         ArrayList<String> nombres = null;
                         nombres = controladorEmp.listaEmpleados();
                         request.setAttribute("Lista", nombres);
-                        request.setAttribute("Busca", "Busca");
                         dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
                     } else {
-                        request.setAttribute("Emp", empleado);
-                        request.setAttribute("User", usuario);
+                        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-                        Cookie galletaUsuario = new Cookie("User", Integer.toString(usuario.getId()));
-                        galletaUsuario.setMaxAge(1000);
-                        response.addCookie(galletaUsuario);
+                        Usuario usuario = null;
+                        usuario = usuarioDAO.obtenerUsuario(empleado.getIdUsuario());
 
-                        request.setAttribute("Actualiza", "Actualiza");
-                        dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
+                        if (usuario == null) {
+                            request.setAttribute("pop1", "popOpen");
+                            ArrayList<String> nombres = null;
+                            nombres = controladorEmp.listaEmpleados();
+                            request.setAttribute("Lista", nombres);
+                            request.setAttribute("Busca", "Busca");
+                            dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
+                        } else {
+                            request.setAttribute("Emp", empleado);
+                            request.setAttribute("User", usuario);
+
+                            Cookie galletaUsuario = new Cookie("User", Integer.toString(usuario.getId()));
+                            galletaUsuario.setMaxAge(1000);
+                            response.addCookie(galletaUsuario);
+
+                            request.setAttribute("Actualiza", "Actualiza");
+                            dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
+                        }
                     }
+                } catch (NullPointerException ex) {
+                    EmpleadoDAO controladorEmp = new EmpleadoDAO();
+                    request.setAttribute("pop1", "popOpen");
+                    ArrayList<String> nombres = null;
+                    nombres = controladorEmp.listaEmpleados();
+                    request.setAttribute("Lista", nombres);
+                    request.setAttribute("Busca", "Busca");
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
                 }
 
             } else if ("Actualiza".equals(accion)) {
-                String Nombre = request.getParameter("Nombre");
-                String Direccion = request.getParameter("Direccion");
-                String Telefono = request.getParameter("Telefono");
-                String Cp = request.getParameter("Cp");
-                String Curp = request.getParameter("Curp");
-                String Nss = request.getParameter("Nss");
-                String Tipo = request.getParameter("Tipo");
-                String Usuario = request.getParameter("Usuario");
-                String Password = request.getParameter("Password");
+                try {
+                    String Nombre = request.getParameter("Nombre");
+                    String Direccion = request.getParameter("Direccion");
+                    String Telefono = request.getParameter("Telefono");
+                    String Cp = request.getParameter("Cp");
+                    String Curp = request.getParameter("Curp");
+                    String Nss = request.getParameter("Nss");
+                    String Tipo = request.getParameter("Tipo");
+                    String Usuario = request.getParameter("Usuario");
+                    String Password = request.getParameter("Password");
 
-                Empleado empleado = new Empleado(0, Nombre, Direccion, Telefono, Cp, Curp, Nss, Tipo, 0);
-                Usuario usuario = new Usuario(0, Usuario, Password, Tipo);
+                    Empleado empleado = new Empleado(0, Nombre, Direccion, Telefono, Cp, Curp, Nss, Tipo, 0);
+                    Usuario usuario = new Usuario(0, Usuario, Password, Tipo);
 
-                Usuario usuarioAntiguo = null;
+                    Usuario usuarioAntiguo = null;
 
-                Cookie[] galletaId = request.getCookies();
-                int id = 0;
-                for (Cookie cookie : galletaId) {
-                    if (cookie.getName().equalsIgnoreCase("User")) {
-                        id = Integer.parseInt(cookie.getValue());
-                        break;
+                    Cookie[] galletaId = request.getCookies();
+                    int id = 0;
+                    for (Cookie cookie : galletaId) {
+                        if (cookie.getName().equalsIgnoreCase("User")) {
+                            id = Integer.parseInt(cookie.getValue());
+                            break;
+                        }
                     }
-                }
 
-                UsuarioDAO controladorUsuario = new UsuarioDAO();
-                EmpleadoDAO controladroEmpleado = new EmpleadoDAO();
+                    UsuarioDAO controladorUsuario = new UsuarioDAO();
+                    EmpleadoDAO controladroEmpleado = new EmpleadoDAO();
 
-                usuarioAntiguo = controladorUsuario.obtenerUsuario(id);
+                    usuarioAntiguo = controladorUsuario.obtenerUsuario(id);
 
-                boolean validar;
-                validar = controladroEmpleado.ActualizaEmpleado(empleado, usuario, usuarioAntiguo);
-                
-                request.setAttribute("pop2", "popOpen");
-                if (validar) {
-                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
-                } else {
-                    
+                    boolean validar;
+                    validar = controladroEmpleado.ActualizaEmpleado(empleado, usuario, usuarioAntiguo);
+
+                    request.setAttribute("pop2", "popOpen");
+                    if (validar) {
+                        dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                    } else {
+
+                        request.setAttribute("Busca", "Busca");
+                        ArrayList<String> nombres = null;
+                        nombres = controladroEmpleado.listaEmpleados();
+                        request.setAttribute("Lista", nombres);
+                        dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosActualizacion.jsp");
+                    }
+                } catch (NullPointerException ex) {
+                    EmpleadoDAO controladroEmpleado = new EmpleadoDAO();
+                    request.setAttribute("pop2", "popOpen");
                     request.setAttribute("Busca", "Busca");
                     ArrayList<String> nombres = null;
                     nombres = controladroEmpleado.listaEmpleados();
@@ -224,67 +244,89 @@ public class MenuEmpleados extends HttpServlet {
                 request.setAttribute("Lista", nombres);
                 dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
             } else if ("BuscaElimina".equalsIgnoreCase(accion)) {
-                EmpleadoDAO controladorEmp = new EmpleadoDAO();
+                try {
+                    EmpleadoDAO controladorEmp = new EmpleadoDAO();
 
-                String Nss = request.getParameter("browsers");
+                    String Nss = request.getParameter("browsers");
 
-                String[] partes = Nss.split(" - ");
+                    String[] partes = Nss.split(" - ");
 
-                Nss = partes[partes.length - 1];
+                    Nss = partes[partes.length - 1];
 
-                Empleado empleado = null;
+                    Empleado empleado = null;
 
-                empleado = controladorEmp.obtenerInfo(Nss);
+                    empleado = controladorEmp.obtenerInfo(Nss);
 
-                if (empleado == null) {
-                    request.setAttribute("pop1", "popOpen");
-                    request.setAttribute("Busca", "Busca");
-                    ArrayList<String> nombres = null;
-                    nombres = controladorEmp.listaEmpleados();
-                    request.setAttribute("Lista", nombres);
-                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
-                } else {
-                    UsuarioDAO usuarioDAO = new UsuarioDAO();
-
-                    Usuario usuario = null;
-                    usuario = usuarioDAO.obtenerUsuario(empleado.getIdUsuario());
-
-                    if (usuario == null) {
+                    if (empleado == null) {
                         request.setAttribute("pop1", "popOpen");
+                        request.setAttribute("Busca", "Busca");
                         ArrayList<String> nombres = null;
                         nombres = controladorEmp.listaEmpleados();
                         request.setAttribute("Lista", nombres);
-                        request.setAttribute("Busca", "Busca");
                         dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
                     } else {
-                        request.setAttribute("Emp", empleado);
-                        request.setAttribute("User", usuario);
+                        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-                        request.setAttribute("Actualiza", "Actualiza");
-                        dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
+                        Usuario usuario = null;
+                        usuario = usuarioDAO.obtenerUsuario(empleado.getIdUsuario());
+
+                        if (usuario == null) {
+                            request.setAttribute("pop1", "popOpen");
+                            ArrayList<String> nombres = null;
+                            nombres = controladorEmp.listaEmpleados();
+                            request.setAttribute("Lista", nombres);
+                            request.setAttribute("Busca", "Busca");
+                            dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
+                        } else {
+                            request.setAttribute("Emp", empleado);
+                            request.setAttribute("User", usuario);
+
+                            request.setAttribute("Actualiza", "Actualiza");
+                            dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
+                        }
                     }
+                } catch (NullPointerException ex) {
+                    EmpleadoDAO controladorEmp = new EmpleadoDAO();
+                    request.setAttribute("pop1", "popOpen");
+                    ArrayList<String> nombres = null;
+                    nombres = controladorEmp.listaEmpleados();
+                    request.setAttribute("Lista", nombres);
+                    request.setAttribute("Busca", "Busca");
+                    dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
                 }
             } else if ("Elimina".equals(accion)) {
-                EmpleadoDAO controladroEmpleado = new EmpleadoDAO();
-                
-                String Nss = request.getParameter("Nss");
-                String Usuario = request.getParameter("Usuario");
+                try {
+                    EmpleadoDAO controladroEmpleado = new EmpleadoDAO();
 
-                boolean validar;
-                validar = controladroEmpleado.EliminarEmpleado(Nss, Usuario);
-                request.setAttribute("pop3", "popOpen");
-                if (validar) {
-                    dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
-                } else {
-                    
+                    String Nss = request.getParameter("Nss");
+                    String Usuario = request.getParameter("Usuario");
+
+                    boolean validar;
+                    validar = controladroEmpleado.EliminarEmpleado(Nss, Usuario);
+                    request.setAttribute("pop3", "popOpen");
+                    if (validar) {
+                        dispatcher = request.getRequestDispatcher("Ventanas/Empleados.jsp");
+                    } else {
+
+                        request.setAttribute("Busca", "Busca");
+                        ArrayList<String> nombres = null;
+                        nombres = controladroEmpleado.listaEmpleados();
+                        request.setAttribute("Lista", nombres);
+                        dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
+                    }
+                } catch (NullPointerException ex) {
+                    EmpleadoDAO controladroEmpleado = new EmpleadoDAO();
+                    request.setAttribute("pop3", "popOpen");
                     request.setAttribute("Busca", "Busca");
                     ArrayList<String> nombres = null;
                     nombres = controladroEmpleado.listaEmpleados();
                     request.setAttribute("Lista", nombres);
                     dispatcher = request.getRequestDispatcher("Ventanas/EmpleadosEliminacion.jsp");
                 }
+
             }
         }
+
         dispatcher.forward(request, response);
     }
 

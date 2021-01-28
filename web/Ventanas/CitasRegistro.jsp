@@ -21,34 +21,37 @@
     </head>
     <body>
         <div class="Form inicio-sesion">
-            <h1>Registro Pacientes</h1>
-            <form class="login-form" action="MenuPacientes?accion=Insert" method="POST" autocomplete="off" accept-charset="utf-8">
-                <input type="text" id="Nombre" name="Nombre" class="login-username" autofocus required maxlength="50" placeholder="Nombre" />
-                <input type="text" id="Direccion" name="Direccion" class="login-username"  required maxlength="50" placeholder="Dirección" />
-                <input type="text" id="Telefono" name="Telefono" class="login-username" maxlength="10" required placeholder="Telefono" />
-                <input type="text" id="Cp" name="Cp" class="login-username" required maxlength="5" placeholder="Código Postal" />
-                <input type="text" id="Curp" name="Curp" class="login-username" required maxlength="18"placeholder="CURP" />
-                <input type="text" id="Nss" name="Nss" class="login-username" required maxlength="11" placeholder="Numero de Seguro Social" />
-                <input type="text" id="Padecimiento" name="Padecimiento" class="login-username" required maxlength="100" placeholder="Padecimientos" />
-                <input list="browsers" name="browsers" class="login-username" placeholder="Busca Medico" required>
-                <datalist id="browsers">
-                    <c:forEach var="Emp" items="${Lista}">
+            <h1>Registro Citas</h1>
+            <form class="login-form" action="MenuCitas?accion=Insert" method="POST" autocomplete="off" accept-charset="utf-8">
+                <input list="medico" name="medico" class="login-username" placeholder="Busca Medico" required autofocus>
+                <datalist id="medico">
+                    <c:forEach var="Emp" items="${Lista1}">
                         <option value="<c:out value="${Emp}"/>">
                         </c:forEach>
                 </datalist>
+                <input list="paciente" name="paciente" class="login-username" placeholder="Busca Paciente" required>
+                <datalist id="paciente">
+                    <c:forEach var="Emp" items="${Lista2}">
+                        <option value="<c:out value="${Emp}"/>">
+                        </c:forEach>
+                </datalist>
+                <input type="datetime-local" id="inicio" name="inicio" class="login-username" required>
+                <label for="inicio">Fecha de inicio de consulta estimada</label>
+                <input type="datetime-local" id="fin" name="fin" class="login-username" required>
+                <label for="fin">Fecha de fin de consulta estimada</label>
                 <input type="submit" name="Resgistrar" value="Registrar" class="login-submit" />
             </form>
         </div>
         <div id="popup1" class="<c:out value="${pop}"/> overlay">
             <div class="popup">
                 <h2>Registro Erroneo</h2>
-                <a class="close" href="MenuPacientes?accion=Registrar">&times;</a>
+                <a class="close" href="MenuCitas?accion=Registrar">&times;</a>
                 <div class="content">
                     Algo salio mal, intente de nuevo.
                 </div>
             </div>
         </div>
-        <div class="fondo Sis4"></div>
+        <div class="fondo Sis5"></div>
         <nav class="main-menu" id="<c:out value="${Nivel}"/>">
             <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="Scripts/navegacion.js"></script>
         </nav>
