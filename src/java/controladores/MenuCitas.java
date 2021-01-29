@@ -265,6 +265,9 @@ public class MenuCitas extends HttpServlet {
 
                     Inicio = Inicio.replace('T', ' ') + ":00";
                     Fin = Fin.replace('T', ' ') + ":00";
+                    
+                    System.out.println(Inicio);
+                    System.out.println(Fin);
 
                     Consulta consulta = new Consulta(0, medico.getId(), paciente.getId(), Inicio, Fin);
 

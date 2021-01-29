@@ -84,7 +84,7 @@ public class ConsultaDAO {
             ArrayList<String> nombre = new ArrayList<>();
 
             while (rs.next()) {
-                nombre.add(rs.getString("nombre") + " - " + rs.getString("nss") + " - Fecha de Cita: " + rs.getTimestamp("inicio"));
+                nombre.add(rs.getString("nombre") + " - " + rs.getString("nss") + " - Fecha de Cita: " + rs.getTimestamp("inicio").toString().replace(".0", ""));
             }
 
             rs.close();
@@ -124,7 +124,7 @@ public class ConsultaDAO {
                 Timestamp inicio = rs.getTimestamp("inicio");
                 Timestamp fin = rs.getTimestamp("fin");
 
-                consulta = new Consulta(id, idMedico, idPaciente, inicio.toString().replace(' ', 'T'), fin.toString().replace(' ', 'T'));
+                consulta = new Consulta(id, idMedico, idPaciente, inicio.toString().replace(' ', 'T').replace(":00.0", ""), fin.toString().replace(' ', 'T').replace(":00.0", ""));
             }
 
             rs.close();
